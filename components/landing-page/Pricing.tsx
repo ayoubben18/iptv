@@ -1,0 +1,147 @@
+import React from "react";
+import SectionWrapper from "../shared/SectionWrapper";
+import {
+  FileText,
+  Play,
+  Tv,
+  Laptop,
+  DollarSign,
+  LucideIcon,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+
+const subscriptionPlans = [
+  {
+    name: "Monthly Plan",
+    description:
+      "Experience our IPTV service on a month-to-month basis. Perfect for those who want to try out our service without a long-term commitment.",
+    price: 11.99,
+    interval: "month",
+    features: [
+      { icon: FileText, text: "Access to all channels" },
+      { icon: Play, text: "On-demand content" },
+      { icon: Tv, text: "HD and 4K streaming" },
+      { icon: Laptop, text: "Multi-device support" },
+    ],
+    savings: null,
+  },
+  {
+    name: "Quarterly Plan",
+    description:
+      "Save with our quarterly subscription plan. Enjoy all the benefits of our IPTV service for three months at a time.",
+    price: 24.99,
+    interval: "3 months",
+    features: [
+      { icon: FileText, text: "Access to all channels" },
+      { icon: Play, text: "On-demand content" },
+      { icon: Tv, text: "HD and 4K streaming" },
+      { icon: Laptop, text: "Multi-device support" },
+      { icon: DollarSign, text: "Save 5 dollars" },
+    ],
+    savings: 5,
+  },
+  {
+    name: "Semi-Annual Plan",
+    description:
+      "Commit to six months of incredible entertainment and save even more. Ideal for regular viewers looking for a better deal.",
+    price: 39.99,
+    interval: "6 months",
+    features: [
+      { icon: FileText, text: "Access to all channels" },
+      { icon: Play, text: "On-demand content" },
+      { icon: Tv, text: "HD and 4K streaming" },
+      { icon: Laptop, text: "Multi-device support" },
+      { icon: DollarSign, text: "Save 20 dollars" },
+    ],
+    savings: 20,
+  },
+  {
+    name: "Annual Plan",
+    description:
+      "Commit to six months of incredible entertainment and save even more. Ideal for regular viewers looking for a better deal.",
+    price: 59.99,
+    interval: "year",
+    features: [
+      { icon: FileText, text: "Access to all channels" },
+      { icon: Play, text: "On-demand content" },
+      { icon: Tv, text: "HD and 4K streaming" },
+      { icon: Laptop, text: "Multi-device support" },
+      { icon: DollarSign, text: "Save 60 dollars" },
+    ],
+    savings: 60,
+  },
+];
+
+interface SubscriptionFeature {
+  icon: LucideIcon;
+  text: string;
+}
+
+interface SubscriptionPlan {
+  name: string;
+  description: string;
+  price: number;
+  interval: string;
+  features: SubscriptionFeature[];
+  savings: number | null;
+}
+
+const Pricing = () => {
+  return (
+    <SectionWrapper className="items-start gap-8">
+      {" "}
+      <h1 className="text-start text-4xl font-black">Our Pricing Plans</h1>
+      <p className="max-w-4xl">
+        Select the perfect plan for your needs and enjoy top-quality IPTV
+        service at great value. From flexible monthly options to cost-saving
+        annual plans, we have something for everyone. Start streaming your
+        favorite content today!
+      </p>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {subscriptionPlans.map((plan, index) => (
+          <PricingCard key={index} {...plan} />
+        ))}
+      </div>
+    </SectionWrapper>
+  );
+};
+
+const PricingCard = ({
+  name,
+  description,
+  price,
+  interval,
+  features,
+  savings,
+}: SubscriptionPlan) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{name}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col items-start gap-2">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-center gap-2">
+            <feature.icon size={16} />
+            {feature.text}
+          </li>
+        ))}
+        <h1 className="text-4xl font-black">$ {price}</h1>
+      </CardContent>
+      <CardFooter>
+        <Button className="w-full">Order</Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default Pricing;
