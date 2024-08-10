@@ -65,6 +65,47 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          country_code: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          price: number
+          user_id: string
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          price: number
+          user_id: string
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          price?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -73,7 +114,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      subscription_plan: "monthly" | "quarterly" | "semi-annual" | "annual"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -2,7 +2,7 @@
 
 import { supabase } from "@/clients/supabaseCLient";
 import { handleStatus } from "@/lib/handleStatus";
-import { Tables } from "@/types/database.types";
+import { Tables } from "@/types/supabase";
 
 const getPaginatedProducts = async (page: number, itemsPerPage: number) => {
   const { data, error, status } = await supabase

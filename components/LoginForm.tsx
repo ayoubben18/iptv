@@ -73,7 +73,6 @@ export default function LoginForm({ logged }: Props) {
       },
     });
     if (error) {
-      console.error("Error", error);
       return;
     } else {
     }

@@ -30,7 +30,9 @@ const links = [
 const NavBar = () => {
   return (
     <div className="container mx-auto flex h-20 items-center justify-between">
-      <h1 className="text-3xl font-black">IPTV</h1>
+      <Link href={`/`} className="text-3xl font-black">
+        IPTV
+      </Link>
       <div className="hidden sm:flex">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

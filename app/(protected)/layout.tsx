@@ -1,7 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
+import { PaypalProvider } from "@/providers/PaypalProvider";
 import type { Metadata } from "next";
-
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "E-Commerce App",
@@ -13,10 +11,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
-    redirect("/login");
-  }
-  return <div>{children}</div>;
+  return (
+    <PaypalProvider>
+      <div>{children}</div>
+    </PaypalProvider>
+  );
 }

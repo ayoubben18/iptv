@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import SectionWrapper from "../shared/SectionWrapper";
 import {
@@ -17,6 +18,8 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
+import { usePlanStore, plans } from "@/stores/usePlanStore";
+import { redirect, useRouter } from "next/navigation";
 
 const subscriptionPlans = [
   {
@@ -97,7 +100,6 @@ interface SubscriptionPlan {
 const Pricing = () => {
   return (
     <SectionWrapper className="items-start gap-8">
-      {" "}
       <h1 className="text-start text-4xl font-black">Our Pricing Plans</h1>
       <p className="max-w-4xl">
         Select the perfect plan for your needs and enjoy top-quality IPTV
@@ -122,6 +124,13 @@ const PricingCard = ({
   features,
   savings,
 }: SubscriptionPlan) => {
+  const router = useRouter();
+  const { selectPlan } = usePlanStore();
+  const handleClick = () => {
+    const plan = plans.find((p) => p.price === price.toString())!;
+    selectPlan(plan);
+    router.push("/checkout");
+  };
   return (
     <Card>
       <CardHeader>
@@ -138,7 +147,9 @@ const PricingCard = ({
         <h1 className="text-4xl font-black">$ {price}</h1>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Order</Button>
+        <Button className="w-full" onClick={handleClick}>
+          Order
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -6,6 +6,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 
 import { CustomError } from "./errors";
 import { CustomErrorEnums } from "@/enums/errors.enum";
+import logger from "./logger";
 
 // TODO : use TalentinoError as a main error handler
 export const handleStatus = <T>(
@@ -24,7 +25,7 @@ export const handleStatus = <T>(
   } else if (status === 404) {
     return null;
   } else {
-    console.log(error);
+    logger.error({ error }, CustomErrorEnums.DatabaseError);
 
     throw new CustomError(
       error!.message,
