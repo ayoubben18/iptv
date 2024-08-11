@@ -15,16 +15,8 @@ export default async function RootLayout({
 }>) {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
-  if (error) {
+  if (error || !data?.user) {
     redirect("/login");
   }
-  return (
-    <div
-      style={{
-        colorScheme: "none",
-      }}
-    >
-      <PaypalProvider>{children}</PaypalProvider>
-    </div>
-  );
+  return <div>{children}</div>;
 }

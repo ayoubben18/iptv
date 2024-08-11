@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import PayPalCheckout from "./PaypalCheckout";
+import { PaypalProvider } from "@/providers/PaypalProvider";
 
 const CheckoutCard = () => {
   const { selectedPlan } = usePlanStore();
@@ -23,7 +24,16 @@ const CheckoutCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <PayPalCheckout />
+        <div
+          className="w-full"
+          style={{
+            colorScheme: "none",
+          }}
+        >
+          <PaypalProvider>
+            <PayPalCheckout />
+          </PaypalProvider>
+        </div>
       </CardContent>
 
       <CardFooter>Total to pay : {selectedPlan.price} $</CardFooter>

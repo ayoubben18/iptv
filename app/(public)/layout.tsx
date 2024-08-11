@@ -8,10 +8,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div>
-      {children}
-      {/* <Footer /> */}
-    </div>
-  );
+  return <div>{children}</div>;
 }
