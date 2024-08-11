@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import Benefites from "./Benefites";
 
 const PlanInput = () => {
   const { selectPlan, selectedPlan } = usePlanStore();
@@ -22,7 +23,7 @@ const PlanInput = () => {
   };
 
   return (
-    <div className="flex h-[300px] w-full items-center justify-center md:h-full">
+    <div className="flex h-[300px] w-full flex-col items-start gap-4 py-6">
       <div className="flex items-center gap-2">
         <h1 className="text-lg">Change your plan:</h1>{" "}
         <Select value={selectedPlan.name} onValueChange={handleValueChange}>
@@ -44,6 +45,9 @@ const PlanInput = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+      </div>
+      <div>
+        <Benefites planName={selectedPlan.name} />
       </div>
     </div>
   );

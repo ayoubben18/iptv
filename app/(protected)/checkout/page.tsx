@@ -19,17 +19,14 @@ export default function CheckoutPage() {
           <CardTitle>Checkout</CardTitle>
           <CardDescription>Choose a plan and pay using paypal</CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2">
+        <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <PlanInput />
           <CheckoutCard />
         </CardContent>
         <CardFooter>
-          <p>For any complaint or misfunctionality please visit the </p>{" "}
           <Link href="/support" className="px-2 font-bold underline">
-            {" "}
-            support{" "}
+            For any complaint or misfunctionality please visit the support page
           </Link>{" "}
-          <p>page</p>
         </CardFooter>
       </Card>
     </PageWrapper>

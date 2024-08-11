@@ -17,7 +17,7 @@ const Footer = () => {
   return (
     <div className="flex w-full flex-col gap-8 py-10">
       <Separator className="bg-black" />
-      <div className="mx-5">
+      <div className="container mx-auto">
         <div className="mt-7 flex items-center justify-between">
           <h1 className="text-2xl font-black">IPTV</h1>
           <div className="flex gap-6">
@@ -26,16 +26,16 @@ const Footer = () => {
             <Facebook className="h-6 w-6" />
             <Instagram className="h-6 w-6" />
           </div>
-        </div>
+        </div>{" "}
+        <Menu />
       </div>
-      <Menu />
     </div>
   );
 };
 
 const Menu = () => {
   return (
-    <div className="mx-5 grid grid-cols-2">
+    <div className="mt-4 grid grid-cols-2">
       {footerMenuItems.map((menu, index) => (
         <div key={index} className="flex flex-col gap-2">
           <h1 className="text-lg font-bold">{menu.title}</h1>

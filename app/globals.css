@@ -4,7 +4,6 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -32,7 +31,6 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -64,10 +62,17 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-br from-card via-sky-100 to-card text-card-foreground;
+  }
+  .dark body {
+    @apply bg-gradient-to-br from-card via-sky-950 to-card text-card-foreground;
   }
 }
 
-.gradient-bg-primary {
-  @apply bg-gradient-to-br from-white via-sky-100 to-white;
+.gradient-bg-primary-light {
+  @apply bg-gradient-to-br from-card via-sky-100 to-card;
+}
+
+.gradient-bg-primary-dark {
+  @apply bg-gradient-to-br from-card via-sky-800 to-card;
 }

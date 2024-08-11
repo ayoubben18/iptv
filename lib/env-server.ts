@@ -6,6 +6,10 @@ export const ServerEnv = createEnv({
     PAYPAL_CLIENT_ID: z.string().min(1),
     PAYPAL_CLIENT_SECRET: z.string().min(1),
     PAYPAL_API_URL: z.string().url(),
+    SMTP_SERVER_HOST: z.string(),
+    SMTP_SERVER_USERNAME: z.string().email(),
+    SMTP_SERVER_PASSWORD: z.string().min(1),
+    SITE_MAIL_RECIEVER: z.string().email(),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {

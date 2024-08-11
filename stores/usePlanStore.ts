@@ -15,7 +15,7 @@ interface PlanStore {
 const plans = [
   { name: "monthly", price: "11.99", currency: "USD", placeholder: "Monthly" },
   {
-    name: "quarterly ",
+    name: "quarterly",
     price: "24.99",
     currency: "USD",
     placeholder: "Quarterly",
@@ -26,7 +26,7 @@ const plans = [
     currency: "USD",
     placeholder: "Semi-Annual",
   },
-  { name: "annual ", price: "59.99", currency: "USD", placeholder: "Annual" },
+  { name: "annual", price: "59.99", currency: "USD", placeholder: "Annual" },
 ];
 
 const usePlanStore = create<PlanStore>((set) => ({

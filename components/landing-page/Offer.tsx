@@ -14,7 +14,7 @@ const iptvFeatures = [
   {
     title: "Superior Quality Experience",
     description:
-      "Enjoy your favorite shows and movies in stunning HD and 4K quality. Our IPTV service ensures a smooth, buffer-free viewing experience.",
+      "Enjoy your favorite shows and movies in stunning HD/4K/8K IPTV quality. Our IPTV service ensures a smooth, buffer-free viewing experience.",
     buttonContent: "Free Trial",
   },
   {

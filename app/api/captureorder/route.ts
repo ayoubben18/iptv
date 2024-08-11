@@ -1,38 +1,38 @@
 import { insertSubscriptionService } from "@/db/service/subscription-service";
-import { ServerEnv } from "@/lib/env-server";
 import logger from "@/lib/logger";
-import { getPayPalAccessToken } from "@/utils/paypal/lib";
+import { planPrices, SubscriptionPlan } from "@/types/tableTypes";
+import { paypalClient } from "@/utils/paypal";
+import paypal from "@paypal/checkout-server-sdk";
 import { NextResponse } from "next/server";
-import { SubscriptionPlan, planPrices } from "@/types/tableTypes";
+import { HttpResponse } from "paypal__paypalhttp";
+
+export const revalidate = 0;
 
 export async function POST(request: Request) {
+  const body = await request.json();
+  const { orderID } = body;
   try {
-    const { orderID } = await request.json();
+    logger.info({ orderID }, "Capture order request");
+    const request = new paypal.orders.OrdersCaptureRequest(orderID);
+    // @ts-ignore
+    request.requestBody({});
+    const response = (await paypalClient.execute(
+      request,
+    )) as HttpResponse<Root>;
 
-    const accessToken = await getPayPalAccessToken();
-    const paypalApiUrl = ServerEnv.PAYPAL_API_URL;
+    if (response.statusCode !== 201 || !response.result) {
+      throw new Error("Failed to capture order");
+    }
 
-    const response = await fetch(
-      `${paypalApiUrl}/v2/checkout/orders/${orderID}/capture`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-
-    const captureData = (await response.json()) as Root;
     const mockedObject = {
-      email: captureData.payment_source.paypal.email_address,
-      country_code: captureData.payment_source.paypal.address.country_code,
-      full_name: captureData.purchase_units[0].shipping.name.full_name,
+      email: response.result.payment_source.paypal.email_address,
+      country_code: response.result.payment_source.paypal.address.country_code,
+      full_name: response.result.purchase_units[0].shipping.name.full_name,
       price: Number.parseFloat(
-        captureData.purchase_units[0].payments.captures[0].amount.value,
+        response.result.purchase_units[0].payments.captures[0].amount.value,
       ),
     };
-    await insertSubscriptionService({
+    const subs = await insertSubscriptionService({
       email: mockedObject.email,
       country_code: mockedObject.country_code,
       full_name: mockedObject.full_name,
@@ -46,14 +46,11 @@ export async function POST(request: Request) {
               ? SubscriptionPlan.SemiAnnual
               : SubscriptionPlan.Annual,
     });
-    logger.info({ mockedObject }, "Update the database");
-    return NextResponse.json(captureData);
-  } catch (error) {
-    logger.error({ error }, "Error capturing PayPal order");
-    return NextResponse.json(
-      { error: "Failed to capture order" },
-      { status: 500 },
-    );
+    logger.info({ order: subs?.data }, "Capture order response");
+    return NextResponse.json({ orderID: response.result.id });
+  } catch (error: any) {
+    logger.error({ error }, "Error capturing order:");
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 

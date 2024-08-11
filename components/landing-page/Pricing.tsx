@@ -29,10 +29,10 @@ const subscriptionPlans = [
     price: 11.99,
     interval: "month",
     features: [
-      { icon: FileText, text: "Access to all channels" },
-      { icon: Play, text: "On-demand content" },
-      { icon: Tv, text: "HD and 4K streaming" },
-      { icon: Laptop, text: "Multi-device support" },
+      { icon: FileText, text: "+15.000 Channel" },
+      { icon: Play, text: "Whatsapp & Email Support 24/7" },
+      { icon: Tv, text: "HD/4K/8K IPTV streaming" },
+      { icon: Laptop, text: "1 CONNECTION" },
     ],
     savings: null,
   },
@@ -43,11 +43,11 @@ const subscriptionPlans = [
     price: 24.99,
     interval: "3 months",
     features: [
-      { icon: FileText, text: "Access to all channels" },
-      { icon: Play, text: "On-demand content" },
-      { icon: Tv, text: "HD and 4K streaming" },
-      { icon: Laptop, text: "Multi-device support" },
-      { icon: DollarSign, text: "Save 5 dollars" },
+      { icon: FileText, text: "+15.000 Channel" },
+      { icon: Play, text: "Whatsapp & Email Support 24/7" },
+      { icon: Tv, text: "HD/4K/8K IPTV streaming" },
+      { icon: Laptop, text: "1 CONNECTION" },
+      { icon: DollarSign, text: "Save 11.98 dollars" },
     ],
     savings: 5,
   },
@@ -58,11 +58,11 @@ const subscriptionPlans = [
     price: 39.99,
     interval: "6 months",
     features: [
-      { icon: FileText, text: "Access to all channels" },
-      { icon: Play, text: "On-demand content" },
-      { icon: Tv, text: "HD and 4K streaming" },
-      { icon: Laptop, text: "Multi-device support" },
-      { icon: DollarSign, text: "Save 20 dollars" },
+      { icon: FileText, text: "+15.000 Channel" },
+      { icon: Play, text: "Whatsapp & Email Support 24/7" },
+      { icon: Tv, text: "HD/4K/8K IPTV streaming" },
+      { icon: Laptop, text: "1 CONNECTION" },
+      { icon: DollarSign, text: "Save 31.95 dollars" },
     ],
     savings: 20,
   },
@@ -73,11 +73,11 @@ const subscriptionPlans = [
     price: 59.99,
     interval: "year",
     features: [
-      { icon: FileText, text: "Access to all channels" },
-      { icon: Play, text: "On-demand content" },
-      { icon: Tv, text: "HD and 4K streaming" },
-      { icon: Laptop, text: "Multi-device support" },
-      { icon: DollarSign, text: "Save 60 dollars" },
+      { icon: FileText, text: "+15.000 Channel" },
+      { icon: Play, text: "Whatsapp & Email Support 24/7" },
+      { icon: Tv, text: "HD/4K/8K IPTV streaming" },
+      { icon: Laptop, text: "1 CONNECTION" },
+      { icon: DollarSign, text: "Save 83.89 dollars" },
     ],
     savings: 60,
   },
@@ -100,7 +100,9 @@ interface SubscriptionPlan {
 const Pricing = () => {
   return (
     <SectionWrapper className="items-start gap-8">
-      <h1 className="text-start text-4xl font-black">Our Pricing Plans</h1>
+      <h1 className="text-start text-4xl font-black" id="pricing">
+        Our Pricing Plans
+      </h1>
       <p className="max-w-4xl">
         Select the perfect plan for your needs and enjoy top-quality IPTV
         service at great value. From flexible monthly options to cost-saving
