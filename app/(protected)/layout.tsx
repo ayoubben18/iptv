@@ -12,8 +12,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <PaypalProvider>
-      <div>{children}</div>
-    </PaypalProvider>
+    <div
+      style={{
+        colorScheme: "none",
+      }}
+    >
+      <PaypalProvider>{children}</PaypalProvider>
+    </div>
   );
 }

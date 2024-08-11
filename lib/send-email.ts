@@ -27,7 +27,6 @@ const sendEmail = async ({ subject, text }: z.infer<typeof emailSchema>) => {
     throw new Error("SMTP Server is not verified");
   }
 
-  logger.info({ subject, text }, "Sending Email...");
   const info = await transporter.sendMail({
     from: ServerEnv.SMTP_SERVER_USERNAME,
     to: ServerEnv.SITE_MAIL_RECIEVER,
@@ -35,9 +34,7 @@ const sendEmail = async ({ subject, text }: z.infer<typeof emailSchema>) => {
     text: text,
     html: "",
   });
-  logger.info({ subject, text }, "New Email sent");
-  console.log("Message Sent", info.messageId);
-  console.log("Mail sent to", ServerEnv.SITE_MAIL_RECIEVER);
+  logger.info({ subject, text, info: info.response }, "New Email sent");
   return info;
 };
 

@@ -10,6 +10,7 @@ export const ServerEnv = createEnv({
     SMTP_SERVER_USERNAME: z.string().email(),
     SMTP_SERVER_PASSWORD: z.string().min(1),
     SITE_MAIL_RECIEVER: z.string().email(),
+    BETTER_STACK_TOKEN: z.string().min(1),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {

@@ -4,9 +4,11 @@ import { usePlanStore } from "@/stores/usePlanStore";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
 
 export default function PayPalCheckout() {
   const [{ isPending }] = usePayPalScriptReducer();
+  const { push } = useRouter();
 
   const { selectedPlan } = usePlanStore();
 
@@ -15,7 +17,6 @@ export default function PayPalCheckout() {
       plan: selectedPlan.name,
       price: selectedPlan.price,
     };
-    console.log({ reqBodyJson });
     const response = await fetch("/api/createorder", {
       method: "POST",
       headers: {
@@ -33,8 +34,6 @@ export default function PayPalCheckout() {
     }
 
     const orderData = (await response.json()) as { orderID: string };
-    console.log({ orderData });
-    console.log({ id: orderData.orderID });
 
     return orderData.orderID;
   };
@@ -57,6 +56,7 @@ export default function PayPalCheckout() {
     } else {
       throw new Error(orderData.error || "Failed to capture order");
     }
+    push("/profile");
   };
 
   return (
@@ -68,7 +68,12 @@ export default function PayPalCheckout() {
         <PayPalButtons
           className="z-0 w-full"
           style={{
-            color: "gold",
+            layout: "vertical",
+            shape: "rect",
+            label: "paypal",
+            height: 55,
+            tagline: false,
+            color: "silver",
           }}
           forceReRender={[selectedPlan]}
           createOrder={createOrder}
@@ -77,8 +82,6 @@ export default function PayPalCheckout() {
             toast.info("Payment cancelled.");
           }}
           onError={(err) => {
-            console.log(err);
-
             toast.error("An error occurred. Please try again.");
           }}
         />

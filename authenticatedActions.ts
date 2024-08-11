@@ -28,7 +28,7 @@ const authenticatedAction = serverActionClient.use(async ({ next }) => {
     throw new CustomError("User not found", CustomErrorEnums.UserNotFound, 404);
   }
 
-  return next({ ctx: { userId: user.id } });
+  return next({ ctx: { userId: user.id, email: user.email } });
 });
 
 export { authenticatedAction, serverActionClient };

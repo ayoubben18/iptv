@@ -15,4 +15,13 @@ const insertSubscription = async (
   return handleStatus(status, data, error) as Subscriptions;
 };
 
-export { insertSubscription };
+const getSubscriptions = async (userId: string) => {
+  const { data, error, status } = await supabase
+    .from("subscriptions")
+    .select("*")
+    .eq("user_id", userId);
+
+  return handleStatus(status, data, error) as Subscriptions[];
+};
+
+export { insertSubscription, getSubscriptions };

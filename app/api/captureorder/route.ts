@@ -3,6 +3,7 @@ import logger from "@/lib/logger";
 import { planPrices, SubscriptionPlan } from "@/types/tableTypes";
 import { paypalClient } from "@/utils/paypal";
 import paypal from "@paypal/checkout-server-sdk";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { HttpResponse } from "paypal__paypalhttp";
 
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
     }
 
     const mockedObject = {
+      order_id: response.result.id,
       email: response.result.payment_source.paypal.email_address,
       country_code: response.result.payment_source.paypal.address.country_code,
       full_name: response.result.purchase_units[0].shipping.name.full_name,
@@ -33,10 +35,7 @@ export async function POST(request: Request) {
       ),
     };
     const subs = await insertSubscriptionService({
-      email: mockedObject.email,
-      country_code: mockedObject.country_code,
-      full_name: mockedObject.full_name,
-      price: mockedObject.price,
+      ...mockedObject,
       plan:
         mockedObject.price === planPrices[SubscriptionPlan.Monthly]
           ? SubscriptionPlan.Monthly
@@ -46,6 +45,7 @@ export async function POST(request: Request) {
               ? SubscriptionPlan.SemiAnnual
               : SubscriptionPlan.Annual,
     });
+    revalidatePath("/profile");
     logger.info({ order: subs?.data }, "Capture order response");
     return NextResponse.json({ orderID: response.result.id });
   } catch (error: any) {

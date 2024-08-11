@@ -70,7 +70,6 @@ const Benefites = ({ planName }: Props) => {
   if (!plan) {
     return null;
   }
-  console.log(planFeatures[plan.name]);
 
   return (
     <div className="flex flex-col items-start gap-2">

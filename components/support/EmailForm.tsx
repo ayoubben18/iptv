@@ -23,16 +23,13 @@ const contactFormSchema = z.object({
   }),
 });
 export default function EmailForm() {
-  const { mutate, isPending } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["sendEmail"],
     mutationFn: sendEmail,
     onError: (error) => {
       console.log(error);
-
-      toast.error("Failed to send email. Please try again later.");
     },
     onSuccess: () => {
-      toast.success("Email Sent Successfully!");
       form.reset();
     },
   });
@@ -44,10 +41,22 @@ export default function EmailForm() {
       message: "",
     },
   });
-  const onSubmit = async (values: z.infer<typeof contactFormSchema>) => {
-    mutate({
-      subject: `New message from ${values.name}`,
-      text: values.message + `\n\nSent by: ${values.email}`,
+  const onSubmit = async ({
+    name,
+    message,
+    email,
+  }: z.infer<typeof contactFormSchema>) => {
+    const handlSubmitToast = async () => {
+      await mutateAsync({
+        subject: `New message from ${name}`,
+        text: message + `\n\nSent by: ${email}`,
+      });
+    };
+
+    toast.promise(handlSubmitToast, {
+      loading: "Sending Email...",
+      success: "Email Sent Successfully!",
+      error: "Failed to send email. Please try again later.",
     });
   };
   return (

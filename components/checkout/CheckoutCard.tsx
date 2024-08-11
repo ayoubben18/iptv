@@ -3,6 +3,7 @@
 import { usePlanStore } from "@/stores/usePlanStore";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -14,17 +15,17 @@ const CheckoutCard = () => {
   const { selectedPlan } = usePlanStore();
 
   return (
-    <Card className="max-w-[380px] text-center">
+    <Card className="w-full text-center">
       <CardHeader>
         <CardTitle>Pay with Paypal</CardTitle>
         <CardDescription>
           You are on the {selectedPlan.placeholder} plan of Ip tv
         </CardDescription>
       </CardHeader>
-
-      <div className="flex w-full items-center justify-center">
+      <CardContent>
         <PayPalCheckout />
-      </div>
+      </CardContent>
+
       <CardFooter>Total to pay : {selectedPlan.price} $</CardFooter>
     </Card>
   );

@@ -2,7 +2,10 @@
 
 import { authenticatedAction } from "@/authenticatedActions";
 import { z } from "zod";
-import { insertSubscription } from "../data/subscriptions-data";
+import {
+  getSubscriptions,
+  insertSubscription,
+} from "../data/subscriptions-data";
 import { planPrices, SubscriptionPlan } from "@/types/tableTypes";
 
 const subscriptionSchema = z.object({
@@ -11,6 +14,7 @@ const subscriptionSchema = z.object({
   email: z.string().email(),
   full_name: z.string(),
   country_code: z.string(),
+  order_id: z.string(),
 });
 
 const refinedSubscriptionSchema = subscriptionSchema.refine(
@@ -23,22 +27,20 @@ const refinedSubscriptionSchema = subscriptionSchema.refine(
 
 const insertSubscriptionService = authenticatedAction
   .schema(refinedSubscriptionSchema)
-  .action(
-    async ({
-      ctx: { userId },
-      parsedInput: { plan, price, email, country_code, full_name },
-    }) => {
-      const sub = await insertSubscription({
-        plan,
-        user_id: userId,
-        price,
-        email,
-        country_code,
-        full_name,
-      });
+  .action(async ({ ctx: { userId }, parsedInput }) => {
+    const sub = await insertSubscription({
+      ...parsedInput,
+      user_id: userId,
+    });
 
-      return sub;
-    },
-  );
+    return sub;
+  });
 
-export { insertSubscriptionService };
+const getSubscriptionsService = authenticatedAction.action(
+  async ({ ctx: { userId, email } }) => {
+    const subs = await getSubscriptions(userId);
+    return { subs, email };
+  },
+);
+
+export { insertSubscriptionService, getSubscriptionsService };

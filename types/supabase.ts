@@ -72,6 +72,7 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          order_id: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           user_id: string
@@ -82,6 +83,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          order_id?: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           user_id: string
@@ -92,6 +94,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          order_id?: string | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
           price?: number
           user_id?: string
