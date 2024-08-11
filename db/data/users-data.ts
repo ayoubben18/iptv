@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/clients/supabaseCLient";
+import logger from "@/lib/logger";
 import { TypedSupabaseClient } from "@/types/TypedSupabaseClient";
 import { Session, User } from "@supabase/supabase-js";
 
@@ -21,4 +21,9 @@ const getUserSession = async (
   return data.session;
 };
 
-export { getUser, getUserSession };
+const logout = async (supabase: TypedSupabaseClient) => {
+  const { error } = await supabase.auth.signOut();
+  if (error) logger.warn({ error: error.message }, "Error logging out:");
+};
+
+export { getUser, getUserSession, logout };

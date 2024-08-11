@@ -1,8 +1,8 @@
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getSubscriptionsService } from "@/db/service/subscription-service";
-import { Separator } from "../ui/separator";
 import { format } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Separator } from "../ui/separator";
+import LogoutButton from "./LogoutButton";
 
 const ProfileCards = async () => {
   const response = await getSubscriptionsService();
@@ -15,7 +15,7 @@ const ProfileCards = async () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="rounded-lg bg-background p-6 shadow-md">
+      <div className="flex items-center justify-between rounded-lg bg-background p-6 shadow-md">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src="/placeholder-user.jpg" alt="User Avatar" />
@@ -25,6 +25,7 @@ const ProfileCards = async () => {
             <h2 className="text-xl font-semibold">{email}</h2>
           </div>
         </div>
+        <LogoutButton />
       </div>
       <div className="flex flex-col items-center gap-6">
         {subs.map((sub) => (
