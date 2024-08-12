@@ -13,7 +13,7 @@ const createServerOrder = authenticatedAction
     }),
   )
   .action(async ({ parsedInput: { plan, price } }) => {
-    logger.info({ price, plan }, "Create order request");
+    logger.info("Create order request", { price, plan });
     const paypalReq = new paypal.orders.OrdersCreateRequest();
     paypalReq.requestBody({
       intent: "CAPTURE",
@@ -30,7 +30,7 @@ const createServerOrder = authenticatedAction
     const response = await paypalClient.execute(paypalReq);
     const orderID = response.result.id as string;
 
-    logger.info({ response }, "Create order response");
+    logger.info("Create order response", { response });
     return { orderID };
   });
 
@@ -45,7 +45,7 @@ const captureServerOrder = authenticatedAction
     // @ts-ignore
     request.requestBody({});
     const response = await paypalClient.execute(request);
-    logger.info({ response }, "Capture order response");
+    logger.info("Capture order response", { response });
     return { orderID: response.result.id };
   });
 

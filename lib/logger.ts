@@ -1,5 +1,5 @@
-import pino from "pino";
-import pretty from "pino-pretty";
+// import pino from "pino";
+// import pretty from "pino-pretty";
 // import { ServerEnv } from "./env-server";
 // // import pretty from "pino-pretty";
 
@@ -23,6 +23,8 @@ import pretty from "pino-pretty";
 //   transport,
 // );
 
-const logger = pino(pretty());
+import { log } from "@logtail/next";
+
+const logger = log;
 
 export default logger;

@@ -1,7 +1,6 @@
 import LoginForm from "@/components/LoginForm";
 import PageWrapper from "@/components/PageWrapper";
 import { getUser } from "@/db/data/users-data";
-import logger from "@/lib/logger";
 import { createClient } from "@/utils/supabase/server";
 import { unstable_noStore } from "next/cache";
 

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { price, plan } = body;
   try {
-    logger.info({ price, plan }, "Create order request");
+    logger.info("Create order request", { price, plan });
     const paypalReq = new paypal.orders.OrdersCreateRequest();
     paypalReq.requestBody({
       intent: "CAPTURE",
@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
 
     const response = await paypalClient.execute(paypalReq);
 
-    logger.info({ response }, "Create order response");
+    logger.info("Create order response", { response });
 
     return NextResponse.json({ orderID: response.result.id }, { status: 201 });
   } catch (error: any) {
-    logger.error({ error }, "Error creating order:");
+    logger.error("Error creating order:", { error });
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

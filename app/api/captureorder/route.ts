@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { orderID } = body;
   try {
-    logger.info({ orderID }, "Capture order request");
+    logger.info("Capture order request", { orderID });
     const request = new paypal.orders.OrdersCaptureRequest(orderID);
     // @ts-ignore
     request.requestBody({});
@@ -46,10 +46,10 @@ export async function POST(request: Request) {
               : SubscriptionPlan.Annual,
     });
     revalidatePath("/profile");
-    logger.info({ order: subs?.data }, "Capture order response");
+    logger.info("Capture order response", { order: subs?.data });
     return NextResponse.json({ orderID: response.result.id });
   } catch (error: any) {
-    logger.error({ error }, "Error capturing order:");
+    logger.error("Error capturing order:", { error });
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

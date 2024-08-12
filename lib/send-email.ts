@@ -34,7 +34,7 @@ const sendEmail = async ({ subject, text }: z.infer<typeof emailSchema>) => {
     text: text,
     html: "",
   });
-  logger.info({ subject, text, info: info.response }, "New Email sent");
+  logger.info("New Email sent", { subject, text, info: info.response });
   return info;
 };
 

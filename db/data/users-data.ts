@@ -23,7 +23,7 @@ const getUserSession = async (
 
 const logout = async (supabase: TypedSupabaseClient) => {
   const { error } = await supabase.auth.signOut();
-  if (error) logger.warn({ error: error.message }, "Error logging out:");
+  if (error) logger.warn("Error logging out:", { error: error.message });
 };
 
 export { getUser, getUserSession, logout };

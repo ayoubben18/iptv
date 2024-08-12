@@ -25,7 +25,7 @@ export const handleStatus = <T>(
   } else if (status === 404) {
     return null;
   } else {
-    logger.error({ error }, CustomErrorEnums.DatabaseError);
+    logger.error(CustomErrorEnums.DatabaseError, { error });
 
     throw new CustomError(
       error!.message,
