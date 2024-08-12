@@ -10,7 +10,6 @@ const getUser = async (supabase: TypedSupabaseClient): Promise<User | null> => {
   if (error) {
     return null;
   }
-  logger.info({ user: data.user }, "User");
   return data.user;
 };
 

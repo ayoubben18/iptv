@@ -9,7 +9,6 @@ const page = async () => {
   unstable_noStore();
   const supabase = createClient();
   const user = await getUser(supabase);
-  logger.info({ user }, "User");
 
   return (
     <PageWrapper className="justify-center">
