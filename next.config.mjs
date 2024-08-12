@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["pino", "pino-pretty"],
-  },
+  // experimental: {
+  //   serverComponentsExternalPackages: ["pino", "pino-pretty"],
+  // },
   output: "standalone",
 };
 
