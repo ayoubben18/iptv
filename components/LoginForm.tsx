@@ -1,26 +1,14 @@
 "use client";
-import { login } from "@/app/(authenticate)/login/action";
+import { supabase } from "@/clients/supabaseCLient";
 import useErrorHandler from "@/hooks/useErrorHandler";
-import { loginSchema } from "@/types/zod-schemas/auth-schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
+import { ChromeIcon } from "lucide-react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-import FormError from "./FormError";
 import { Button } from "./ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
+import FormError from "./FormError";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
 
 interface Props {
   logged: boolean;
@@ -28,13 +16,15 @@ interface Props {
 
 export default function LoginForm({ logged }: Props) {
   const { error, triggerError, clearError } = useErrorHandler();
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  // const form = useForm<z.infer<typeof loginSchema>>({
+  //   resolver: zodResolver(loginSchema),
+  //   defaultValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  // });
+
+  const { push } = useRouter();
 
   useEffect(() => {
     if (logged) {
@@ -42,50 +32,76 @@ export default function LoginForm({ logged }: Props) {
     }
   }, [logged, triggerError]);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: login,
-    onError: (error) => {
-      triggerError(error.message);
-      toast.error(error.message);
-    },
-    onSuccess: (data) => {
-      toast.success("Login successful");
-      clearError();
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationKey: ["login"],
+  //   mutationFn: login,
+  //   onError: (error) => {
+  //     triggerError(error.message);
+  //     toast.error(error.message);
+  //   },
+  //   onSuccess: (data) => {
+  //     toast.success("Login successful");
+  //     clearError();
+  //   },
+  // });
 
   // add oauth for your supabase project to acess this
-  // const signInWithAuth = async (provider: "google" | "facebook") => {
-  //   let whatENV;
-  //   const env = process.env.NODE_ENV;
-  //   if (env === "development") {
-  //     whatENV = "http://localhost:3000";
-  //   } else if (env === "production") {
-  //     whatENV = process.env.NEXT_PUBLIC_URL!;
-  //   }
-  //   const { error } = await supabase.auth.signInWithOAuth({
-  //     provider,
-  //     options: {
-  //       redirectTo: `${whatENV}/auth/callback`,
-  //     },
-  //   });
-  //   if (error) {
-  //     return;
-  //   } else {
-  //   }
-  // };
+  const signInWithAuth = async (provider: "google") => {
+    const supabase = createClient();
+    let whatENV;
+    const env = process.env.NODE_ENV;
+    if (env === "development") {
+      whatENV = "http://localhost:3000";
+    } else if (env === "production") {
+      whatENV = process.env.NEXT_PUBLIC_URL!;
+    }
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${whatENV}/auth/callback`,
+      },
+    });
+    if (error) {
+      console.error("Error", error);
+      return;
+    } else {
+    }
+  };
 
   return (
-    <div className="mx-auto max-w-sm space-y-6">
-      <div className="space-y-2 text-center">
+    <div className="mx-auto flex w-full flex-col justify-center gap-4 space-y-6">
+      <h1 className="text-center text-3xl font-bold">Login</h1>
+      <p className="text-center text-gray-500 dark:text-gray-400">
+        You need to login so we can save your payments so you don't lose them
+      </p>
+      <Button
+        variant="outline"
+        className="p-8 text-xl sm:p-10 sm:text-3xl"
+        onClick={() => {
+          signInWithAuth("google");
+        }}
+        disabled={logged}
+        size={"lg"}
+      >
+        <ChromeIcon className="mr-2 h-8 w-8" />
+        Login with Google
+      </Button>
+      <FormError message={error} />
+
+      <Link
+        href={`/profile`}
+        className="text-center text-lg underline underline-offset-2"
+      >
+        Visit your profile to logout
+      </Link>
+      {/* <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Login</h1>
         <p className="text-gray-500 dark:text-gray-400">
           Enter your email and password to access your account
         </p>
       </div>
-      <div className="space-y-4">
-        <Form {...form}>
+      <div className="space-y-4"> */}
+      {/* <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) => mutate(data))}
             className="space-y-8"
@@ -134,15 +150,15 @@ export default function LoginForm({ logged }: Props) {
               Submit
             </Button>
           </form>
-        </Form>
-        <div className="grid gap-4">
+        </Form> */}
+      {/* <div className="grid gap-4">
           <Link
             href={`/register`}
             className="text-center text-lg underline underline-offset-2"
           >
             Don't have an account ? click to register
           </Link>
-          {/* <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
               className="w-full"
@@ -163,9 +179,9 @@ export default function LoginForm({ logged }: Props) {
               <FacebookIcon className="mr-2 h-4 w-4" />
               Facebook
             </Button>
-          </div> */}
+          </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
