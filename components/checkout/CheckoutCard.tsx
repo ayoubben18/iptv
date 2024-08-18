@@ -1,6 +1,5 @@
 "use client";
 
-import { usePlanStore } from "@/stores/usePlanStore";
 import {
   Card,
   CardContent,
@@ -11,16 +10,18 @@ import {
 } from "../ui/card";
 import PayPalCheckout from "./PaypalCheckout";
 import { PaypalProvider } from "@/providers/PaypalProvider";
+import { useQueryState } from "nuqs";
+import { plans } from "@/constants/plans";
 
 const CheckoutCard = () => {
-  const { selectedPlan } = usePlanStore();
-
+  const [plan] = useQueryState("plan");
   return (
     <Card className="w-full text-center">
       <CardHeader>
         <CardTitle>Pay with Paypal</CardTitle>
         <CardDescription>
-          You are on the {selectedPlan.placeholder} plan of Ip tv
+          You are on the {plans.find((p) => p.name === plan)?.placeholder} plan
+          of Ip tv
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -36,7 +37,9 @@ const CheckoutCard = () => {
         </div>
       </CardContent>
 
-      <CardFooter>Total to pay : {selectedPlan.price} $</CardFooter>
+      <CardFooter>
+        Total to pay : {plans.find((p) => p.name === plan)?.price} $
+      </CardFooter>
     </Card>
   );
 };

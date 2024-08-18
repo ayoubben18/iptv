@@ -131,7 +131,7 @@ const PricingCard = ({
   const handleClick = () => {
     const plan = plans.find((p) => p.price === price.toString())!;
     selectPlan(plan);
-    router.push("/checkout");
+    router.push(`/checkout?plan=${plan.name}`);
   };
   return (
     <Card>

@@ -4,13 +4,12 @@ import { supabase } from "@/clients/supabaseCLient";
 import { handleStatus } from "@/lib/handleStatus";
 import { Tables } from "@/types/supabase";
 
-const getPaginatedProducts = async (page: number, itemsPerPage: number) => {
-  const { data, error, status } = await supabase
-    .from("products")
-    .select("*")
-    .range((page - 1) * itemsPerPage, page * itemsPerPage - 1);
+type Products = Tables<"products">;
 
-  return handleStatus(status, data, error) as Tables<"products">[];
+const getProducts = async (): Promise<Products[] | null> => {
+  const { data, error, status } = await supabase.from("products").select("*");
+
+  return handleStatus(status, data, error) as Products[] | null;
 };
 
-export { getPaginatedProducts };
+export { getProducts };

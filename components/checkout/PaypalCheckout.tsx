@@ -1,21 +1,22 @@
 "use client";
 
-import { usePlanStore } from "@/stores/usePlanStore";
+import { usePlanStore, plans } from "@/stores/usePlanStore";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 
 export default function PayPalCheckout() {
   const [{ isPending }] = usePayPalScriptReducer();
   const { push } = useRouter();
 
-  const { selectedPlan } = usePlanStore();
+  const [plan] = useQueryState("plan");
 
   const createOrder = async () => {
     const reqBodyJson = {
-      plan: selectedPlan.name,
-      price: selectedPlan.price,
+      plan: plan,
+      price: plans.find((p) => p.name === plan)?.price,
     };
     const response = await fetch("/api/createorder", {
       method: "POST",
@@ -75,7 +76,7 @@ export default function PayPalCheckout() {
             tagline: false,
             color: "silver",
           }}
-          forceReRender={[selectedPlan]}
+          forceReRender={[plan]}
           createOrder={createOrder}
           onApprove={onApprove}
           onCancel={() => {

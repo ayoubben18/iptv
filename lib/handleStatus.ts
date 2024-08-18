@@ -8,29 +8,30 @@ import { CustomError } from "./errors";
 import { CustomErrorEnums } from "@/enums/errors.enum";
 import logger from "./logger";
 
-// TODO : use TalentinoError as a main error handler
 export const handleStatus = <T>(
   status: number,
   data: T | T[],
   error: PostgrestError | null,
 ) => {
-  if (status === 200 || status === 201 || status === 204) {
-    if (!data) {
-      return;
-    }
-    if (Array.isArray(data)) {
-      return data as T[];
-    }
-    return data as T;
-  } else if (status === 404) {
-    return null;
-  } else {
-    logger.error(CustomErrorEnums.DatabaseError, { error });
+  switch (status) {
+    case 200:
+    case 201:
+      if (!data) {
+        return;
+      }
+      if (Array.isArray(data)) {
+        return data as T[];
+      }
+      return data as T;
+    case 404:
+      return null;
+    default:
+      logger.error(CustomErrorEnums.DatabaseError, { error });
 
-    throw new CustomError(
-      error!.message,
-      CustomErrorEnums.DatabaseError,
-      status,
-    );
+      throw new CustomError(
+        error!.message,
+        CustomErrorEnums.DatabaseError,
+        status,
+      );
   }
 };
