@@ -131,7 +131,9 @@ const PricingCard = ({
   const handleClick = () => {
     const plan = plans.find((p) => p.price === price.toString())!;
     selectPlan(plan);
-    router.push(`/checkout?plan=${plan.name}`);
+    router.push(
+      `https://shirts-store-roan.vercel.app/checkout?plan=${plan.name}`,
+    );
   };
   return (
     <Card>
