@@ -9,64 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      products: {
+      devices: {
         Row: {
-          description: string | null
-          name: string
-          price: number
-          product_id: number
+          device_type: string
+          id: string
+          mac_address: string
+          subscription_id: string | null
         }
         Insert: {
-          description?: string | null
-          name: string
-          price: number
-          product_id?: number
+          device_type: string
+          id?: string
+          mac_address: string
+          subscription_id?: string | null
         }
         Update: {
-          description?: string | null
-          name?: string
-          price?: number
-          product_id?: number
-        }
-        Relationships: []
-      }
-      ratings: {
-        Row: {
-          comment: string | null
-          created_at: string | null
-          product_id: number | null
-          rating: number
-          rating_id: number
-          user_id: number
-        }
-        Insert: {
-          comment?: string | null
-          created_at?: string | null
-          product_id?: number | null
-          rating: number
-          rating_id?: number
-          user_id: number
-        }
-        Update: {
-          comment?: string | null
-          created_at?: string | null
-          product_id?: number | null
-          rating?: number
-          rating_id?: number
-          user_id?: number
+          device_type?: string
+          id?: string
+          mac_address?: string
+          subscription_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "ratings_product_id_fkey"
-            columns: ["product_id"]
+            foreignKeyName: "devices_subscription_id_fkey"
+            columns: ["subscription_id"]
             isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
           },
         ]
       }
       subscriptions: {
         Row: {
+          adult_content: boolean | null
+          connections: string | null
           country_code: string | null
           created_at: string | null
           email: string | null
@@ -75,9 +50,15 @@ export type Database = {
           order_id: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
+          quick_delivery: boolean | null
+          status: string | null
+          subscription_type: string | null
           user_id: string
+          vod: boolean | null
         }
         Insert: {
+          adult_content?: boolean | null
+          connections?: string | null
           country_code?: string | null
           created_at?: string | null
           email?: string | null
@@ -86,9 +67,15 @@ export type Database = {
           order_id?: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
+          quick_delivery?: boolean | null
+          status?: string | null
+          subscription_type?: string | null
           user_id: string
+          vod?: boolean | null
         }
         Update: {
+          adult_content?: boolean | null
+          connections?: string | null
           country_code?: string | null
           created_at?: string | null
           email?: string | null
@@ -97,7 +84,11 @@ export type Database = {
           order_id?: string | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
           price?: number
+          quick_delivery?: boolean | null
+          status?: string | null
+          subscription_type?: string | null
           user_id?: string
+          vod?: boolean | null
         }
         Relationships: [
           {
@@ -109,12 +100,55 @@ export type Database = {
           },
         ]
       }
+      user_data: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: never
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: never
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      most_selling_plan: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      most_selling_plans: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          plan_name: string
+          count: number
+        }[]
+      }
+      total_sales_overall: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      total_sales_today: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      total_users: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
     }
     Enums: {
       subscription_plan: "monthly" | "quarterly" | "semi-annual" | "annual"

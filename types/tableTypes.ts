@@ -1,6 +1,22 @@
 import { Tables, Enums } from "./supabase";
 
 export type Subscriptions = Tables<"subscriptions">;
+export type Devices = Tables<"devices">;
+
+export enum StatusEnum {
+  // 'draft', 'paid', 'completed'
+  Draft = "draft",
+  Paid = "paid",
+  Completed = "completed",
+}
+
+export enum ConnectionsEnum {
+  One = "1",
+  Two = "2",
+  Three = "3",
+  Four = "4",
+  Five = "5",
+}
 
 export enum SubscriptionPlan {
   Monthly = "monthly",
