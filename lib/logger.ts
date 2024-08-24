@@ -4,7 +4,7 @@ import pinoPretty from "pino-pretty";
 
 let logger: pino.Logger | Logger;
 
-if (process.env.NODE_ENV !== "development") {
+if (process.env.NODE_ENV === "development") {
   logger = pino(pinoPretty());
 } else {
   logger = log;
