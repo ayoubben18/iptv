@@ -11,32 +11,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getOffers } from "@/db/data/redis-data";
+import { checkoutService } from "@/db/service/subscription-service";
 import { basicFeatures } from "@/lib/constants";
+import { ConnectionsEnum, SubscriptionPlan } from "@/types/tableTypes";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CreditCard, DollarSign, Link } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { useMemo, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { checkoutService } from "@/db/service/subscription-service";
-import { ConnectionsEnum, Devices, SubscriptionPlan } from "@/types/tableTypes";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
+import { ClientEnv } from "@/lib/env-client";
 
 export default function Component() {
   const { data: offers, isLoading } = useQuery({
     queryKey: ["offers"],
     queryFn: () => getOffers(),
   });
-
-  const handleCheckout = async () => {
-    toast.promise(checkout, {
-      loading: "Checking out...",
-      success: "Checkout successful!",
-      error: "Checkout failed!",
-    });
-  };
+  const [activeTab, setActiveTab] = useState("1");
 
   const [connections, setConnections] = useQueryState<ConnectionsEnum>(
     "connections",
@@ -45,6 +40,7 @@ export default function Component() {
       parse: (value) => value as ConnectionsEnum,
     },
   );
+  const { push } = useRouter();
   const [plan, setPlan] = useQueryState<SubscriptionPlan>("plan", {
     defaultValue: SubscriptionPlan.Monthly,
     parse: (value) => value as SubscriptionPlan,
@@ -63,18 +59,43 @@ export default function Component() {
       { length: parseInt(connections) },
       (_, index) => (index + 1).toString(),
     );
+
     return [offer, features, selectedPlan, arrayItems];
   }, [plan, connections, offers]);
 
-  const [devices, setDevices] = useState<
-    Omit<Devices, "subscription_id" | "id">[]
-  >(arrayItems.map((item) => ({ device_type: "", mac_address: "" })));
+  const { control, watch } = useForm({
+    defaultValues: {
+      devices: arrayItems.map(() => ({ device_type: "", mac_address: "" })),
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "devices",
+  });
+
+  useEffect(() => {
+    if (arrayItems.length > fields.length) {
+      const missingFields = arrayItems.length - fields.length;
+      for (let i = 0; i < missingFields; i++) {
+        append({ device_type: "", mac_address: "" });
+      }
+    } else {
+      const missingFields = fields.length - arrayItems.length;
+      for (let i = 0; i < missingFields; i++) {
+        remove(fields.length - 1);
+      }
+      setActiveTab(arrayItems[0]);
+    }
+  }, [arrayItems, fields, append, remove]);
+
+  const devices = watch("devices");
 
   const handleAddonChange = (addon: keyof typeof addons) => {
     setAddons((prev) => ({ ...prev, [addon]: !prev[addon] }));
   };
   const { mutateAsync: checkout, isPending } = useMutation({
-    mutationFn: async () =>
+    mutationFn: async (data) =>
       checkoutService({
         connections: connections,
         plan: plan,
@@ -84,7 +105,19 @@ export default function Component() {
         price: parseFloat(selectedPlan?.price || "0"),
         devices: devices,
       }),
+    onSuccess: (data) => {
+      const id = data?.data?.id;
+      push(`${ClientEnv.NEXT_PUBLIC_REDIRECTION_SITE}/checkout?id=${id}`);
+    },
   });
+
+  const handleCheckout = async () => {
+    toast.promise(checkout, {
+      loading: "Checking out...",
+      success: "Checkout successful!",
+      error: "Checkout failed!",
+    });
+  };
 
   if (isLoading) {
     return (
@@ -176,23 +209,12 @@ export default function Component() {
             <CardTitle>CONFIGURE</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* <div>
-              <Label htmlFor="subscription-type">Subscription Type</Label>
-              <Select
-                onValueChange={setSubscriptionType}
-                value={subscriptionType}
-              >
-                <SelectTrigger id="subscription-type" className="w-full">
-                  <SelectValue placeholder="- Select Subscription Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                  <SelectItem value="quarterly">Quarterly</SelectItem>
-                  <SelectItem value="yearly">Yearly</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
-            <Tabs defaultValue={arrayItems[0]} className="w-full">
+            <Tabs
+              defaultValue={arrayItems[0]}
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <TabsList
                 className={`grid w-full grid-cols-${arrayItems.length}`}
               >
@@ -202,53 +224,54 @@ export default function Component() {
                   </TabsTrigger>
                 ))}
               </TabsList>
-              {arrayItems.map((connection, index) => (
-                <TabsContent key={index} value={connection}>
+              {fields.map((field, index) => (
+                <TabsContent key={field.id} value={(index + 1).toString()}>
                   <div>
-                    <Label htmlFor="mac-address">Mac Address</Label>
+                    <Label htmlFor={`mac-address-${index}`}>Mac Address</Label>
                     <p className="mb-2 text-sm text-muted-foreground">
                       Put Your Mac Address Only If You Use Mag Device (Please
                       Note That It Should Be Starts With 00:1A)
                     </p>
-                    <Input
-                      id="mac-address"
-                      placeholder="00:1A:79:XX:XX:XX"
-                      value={devices[index].mac_address}
-                      onChange={(e) =>
-                        setDevices((prev) => {
-                          const newDevices = [...prev];
-                          newDevices[index].mac_address = e.target.value;
-                          return newDevices;
-                        })
-                      }
+                    <Controller
+                      name={`devices.${index}.mac_address`}
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          id={`mac-address-${index}`}
+                          placeholder="00:1A:79:XX:XX:XX"
+                          {...field}
+                        />
+                      )}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="additional-info">
+                    <Label htmlFor={`device-type-${index}`}>
                       Any Additional Info ?
                     </Label>
-                    <Select
-                      value={devices[index].device_type}
-                      onValueChange={(value) =>
-                        setDevices((prev) => {
-                          const newDevices = [...prev];
-                          newDevices[index].device_type = value;
-                          return newDevices;
-                        })
-                      }
-                    >
-                      <SelectTrigger id="device-type">
-                        <SelectValue placeholder="Select device type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="mag">MAG Device</SelectItem>
-                        <SelectItem value="android">Android Device</SelectItem>
-                        <SelectItem value="ios">iOS Device</SelectItem>
-                        <SelectItem value="smart_tv">Smart TV</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name={`devices.${index}.device_type`}
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger id={`device-type-${index}`}>
+                            <SelectValue placeholder="Select device type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="mag">MAG Device</SelectItem>
+                            <SelectItem value="android">
+                              Android Device
+                            </SelectItem>
+                            <SelectItem value="ios">iOS Device</SelectItem>
+                            <SelectItem value="smart_tv">Smart TV</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </div>
                 </TabsContent>
               ))}

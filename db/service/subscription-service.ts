@@ -8,6 +8,7 @@ import {
 } from "../data/subscriptions-data";
 import { planPrices, StatusEnum, SubscriptionPlan } from "@/types/tableTypes";
 import { insertDevices } from "../data/devices-data";
+import { redirect } from "next/dist/server/api-utils";
 
 const subscriptionSchema = z.object({
   plan: z.nativeEnum(SubscriptionPlan),
@@ -63,7 +64,12 @@ const checkoutService = authenticatedAction
   )
   .action(async ({ ctx: { userId }, parsedInput }) => {
     const sub = await insertSubscription({
-      ...parsedInput,
+      plan: parsedInput.plan,
+      price: parsedInput.price,
+      connections: parsedInput.connections,
+      adult_content: parsedInput.adult_content,
+      quick_delivery: parsedInput.quick_delivery,
+      vod: parsedInput.vod,
       user_id: userId,
       status: StatusEnum.Draft,
     });
@@ -72,7 +78,7 @@ const checkoutService = authenticatedAction
       subscription_id: sub.id,
     }));
     await insertDevices(devices);
-    return sub.id;
+    return { id: sub.id };
   });
 
 export { insertSubscriptionService, getSubscriptionsService, checkoutService };
