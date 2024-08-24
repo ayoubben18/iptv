@@ -1,14 +1,14 @@
 "use server";
 
 import { authenticatedAction } from "@/authenticatedActions";
+import { planPrices, StatusEnum, SubscriptionPlan } from "@/types/tableTypes";
 import { z } from "zod";
+import { insertDevices } from "../data/devices-data";
 import {
   getSubscriptions,
   insertSubscription,
 } from "../data/subscriptions-data";
-import { planPrices, StatusEnum, SubscriptionPlan } from "@/types/tableTypes";
-import { insertDevices } from "../data/devices-data";
-import { redirect } from "next/dist/server/api-utils";
+import logger from "@/lib/logger";
 
 const subscriptionSchema = z.object({
   plan: z.nativeEnum(SubscriptionPlan),
@@ -77,8 +77,9 @@ const checkoutService = authenticatedAction
       ...device,
       subscription_id: sub.id,
     }));
-    await insertDevices(devices);
+    const devicesInserted = await insertDevices(devices);
+    logger.info("Draft Subscription created", { sub, devicesInserted });
     return { id: sub.id };
   });
 
-export { insertSubscriptionService, getSubscriptionsService, checkoutService };
+export { checkoutService, getSubscriptionsService, insertSubscriptionService };

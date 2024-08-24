@@ -102,7 +102,7 @@ export default function Component() {
         adult_content: addons.adultContent,
         vod: addons.vod,
         quick_delivery: addons.quickDelivery,
-        price: parseFloat(selectedPlan?.price || "0"),
+        price: totalPrice,
         devices: devices,
       }),
     onSuccess: (data) => {
@@ -118,6 +118,15 @@ export default function Component() {
       error: "Checkout failed!",
     });
   };
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    setTotalPrice(
+      parseFloat(selectedPlan?.price || "0") +
+        (addons.quickDelivery ? 1.99 : 0),
+    );
+  }, [selectedPlan, addons]);
 
   if (isLoading) {
     return (
@@ -329,13 +338,7 @@ export default function Component() {
           </div>
           <div className="flex justify-between text-lg font-bold">
             <span>Total Due Today</span>
-            <span>
-              {(
-                parseFloat(selectedPlan?.price || "0") +
-                (addons.quickDelivery ? 1.99 : 0)
-              ).toFixed(2)}
-              $
-            </span>
+            <span>{totalPrice}$</span>
           </div>
           <Button
             className="w-full"

@@ -1,30 +1,32 @@
-// import pino from "pino";
-// import pretty from "pino-pretty";
-// import { ServerEnv } from "./env-server";
-// // import pretty from "pino-pretty";
-
-// const transport = pino.transport({
-//   targets: [
-//     {
-//       target: "pino-pretty",
-//       options: { destination: process.stdout.fd },
-//     },
-//     {
-//       target: "@logtail/pino",
-//       options: { sourceToken: ServerEnv.BETTER_STACK_TOKEN },
-//     },
-//   ],
-// });
-
-// const logger = pino(
-//   {
-//     level: "info",
-//   },
-//   transport,
-// );
-
 import { log } from "@logtail/next";
 
-const logger = log;
+const logtailLogger = log;
+
+const logger = {
+  info: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.info("INFO:", message, ...args);
+    }
+    logtailLogger.info(message, ...args);
+  },
+  warn: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("WARN:", message, ...args);
+    }
+    logtailLogger.warn(message, ...args);
+  },
+  error: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.error("ERROR:", message, ...args);
+    }
+    logtailLogger.error(message, ...args);
+  },
+  debug: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("DEBUG:", message, ...args);
+    }
+    logtailLogger.debug(message, ...args);
+  },
+};
 
 export default logger;
