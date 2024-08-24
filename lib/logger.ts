@@ -1,32 +1,13 @@
-import { log } from "@logtail/next";
+import { log, Logger } from "@logtail/next";
+import pino from "pino";
+import pinoPretty from "pino-pretty";
 
-const logtailLogger = log;
+let logger: pino.Logger | Logger;
 
-const logger = {
-  info: (message: string, ...args: any[]) => {
-    if (process.env.NODE_ENV === "development") {
-      console.info("INFO:", message, ...args);
-    }
-    logtailLogger.info(message, ...args);
-  },
-  warn: (message: string, ...args: any[]) => {
-    if (process.env.NODE_ENV === "development") {
-      console.warn("WARN:", message, ...args);
-    }
-    logtailLogger.warn(message, ...args);
-  },
-  error: (message: string, ...args: any[]) => {
-    if (process.env.NODE_ENV === "development") {
-      console.error("ERROR:", message, ...args);
-    }
-    logtailLogger.error(message, ...args);
-  },
-  debug: (message: string, ...args: any[]) => {
-    if (process.env.NODE_ENV === "development") {
-      console.debug("DEBUG:", message, ...args);
-    }
-    logtailLogger.debug(message, ...args);
-  },
-};
+if (process.env.NODE_ENV !== "development") {
+  logger = pino(pinoPretty());
+} else {
+  logger = log;
+}
 
 export default logger;
