@@ -58,6 +58,7 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          additional_info: string | null
           adult_content: boolean | null
           connections: string | null
           country_code: string | null
@@ -78,6 +79,7 @@ export type Database = {
           vod: boolean | null
         }
         Insert: {
+          additional_info?: string | null
           adult_content?: boolean | null
           connections?: string | null
           country_code?: string | null
@@ -98,6 +100,7 @@ export type Database = {
           vod?: boolean | null
         }
         Update: {
+          additional_info?: string | null
           adult_content?: boolean | null
           connections?: string | null
           country_code?: string | null

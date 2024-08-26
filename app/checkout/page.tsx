@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function CheckoutPage() {
   return (
-    <PageWrapper className="justify-center p-6">
+    <PageWrapper className="justify-center py-6" notContainer>
       <Suspense>
         <CheckoutCard />
       </Suspense>

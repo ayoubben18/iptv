@@ -16,6 +16,7 @@ const checkoutSchema = z.object({
   adult_content: z.boolean(),
   quick_delivery: z.boolean(),
   vod: z.boolean(),
+  additional_info: z.string().nullable(),
   devices: z.array(
     z.object({
       mac_address: z.string(),
@@ -32,10 +33,11 @@ const checkoutService = async (data: z.infer<typeof checkoutSchema>) => {
     adult_content: data.adult_content,
     quick_delivery: data.quick_delivery,
     vod: data.vod,
-    status: StatusEnum.Draft,
     user_email: data.user_email,
     user_name: data.user_name,
     user_phone: data.user_phone,
+    additional_info: data.additional_info,
+    status: StatusEnum.Draft,
   });
   const devices = data.devices.map((device) => ({
     ...device,

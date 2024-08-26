@@ -34,13 +34,22 @@ import { Separator } from "../ui/separator";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientEnv } from "@/lib/env-client";
+import { Textarea } from "../ui/textarea";
+
+const checkoutSchema = z.object({
+  name: z.string().min(5, "Name must be at least 5 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
+  additional_info: z.string(),
+  devices: z.array(
+    z.object({
+      device_type: z.string(),
+      mac_address: z.string(),
+    }),
+  ),
+});
 
 export default function CheckoutCard() {
-  const checkoutSchema = z.object({
-    name: z.string().min(5, "Name must be at least 5 characters"),
-    email: z.string().email("Invalid email address"),
-    phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
-  });
   const { data: offers, isLoading } = useQuery({
     queryKey: ["offers"],
     queryFn: () => getOffers(),
@@ -82,31 +91,15 @@ export default function CheckoutCard() {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<z.infer<typeof checkoutSchema>>({
     defaultValues: {
       devices: arrayItems.map(() => ({ device_type: "", mac_address: "" })),
       name: "",
       email: "",
       phone: "",
+      additional_info: "",
     },
-    resolver: zodResolver(
-      z.object({
-        name: z.string().min(5, "Name must be at least 5 characters"),
-        email: z.string().email("Invalid email address"),
-        phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
-        devices: z.array(
-          z.object({
-            device_type: z.string(),
-            mac_address: z
-              .string()
-              .regex(
-                /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
-                "Invalid MAC address format",
-              ),
-          }),
-        ),
-      }),
-    ),
+    resolver: zodResolver(checkoutSchema),
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -129,8 +122,6 @@ export default function CheckoutCard() {
     }
   }, [arrayItems, fields, append, remove]);
 
-  const devices = watch("devices");
-
   const handleAddonChange = (addon: keyof typeof addons) => {
     setAddons((prev) => ({ ...prev, [addon]: !prev[addon] }));
   };
@@ -143,15 +134,18 @@ export default function CheckoutCard() {
         vod: addons.vod,
         quick_delivery: addons.quickDelivery,
         price: totalPrice,
-        devices: devices,
+        devices: data.devices,
         user_name: data.name,
         user_email: data.email,
         user_phone: data.phone,
+        additional_info: data.additional_info,
       }),
     onSuccess: (data) => {
       push(`${ClientEnv.NEXT_PUBLIC_REDIRECTION_SITE}/checkout?id=${data}`);
     },
   });
+
+  console.log(watch("additional_info"));
 
   const handleCheckout = async (data: z.infer<typeof checkoutSchema>) => {
     toast.promise(checkout(data), {
@@ -236,7 +230,7 @@ export default function CheckoutCard() {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6 lg:flex-row">
+    <div className="flex w-full flex-col gap-6 p-6 lg:flex-row">
       <div className="flex-1 space-y-6">
         <Card>
           <CardHeader>
@@ -249,7 +243,12 @@ export default function CheckoutCard() {
                 name="name"
                 control={control}
                 render={({ field }) => (
-                  <Input id="name" placeholder="Your full name" {...field} />
+                  <Input
+                    id="name"
+                    placeholder="Your full name"
+                    className="max-w-lg"
+                    {...field}
+                  />
                 )}
               />
               {errors.name && (
@@ -268,6 +267,7 @@ export default function CheckoutCard() {
                     id="email"
                     type="email"
                     placeholder="Your email address"
+                    className="max-w-lg"
                     {...field}
                   />
                 )}
@@ -287,6 +287,7 @@ export default function CheckoutCard() {
                   <Input
                     id="phone"
                     placeholder="Your phone number"
+                    className="max-w-lg"
                     {...field}
                   />
                 )}
@@ -305,7 +306,7 @@ export default function CheckoutCard() {
             <CardTitle>Subscription Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex-1">
                 <Label htmlFor="connections">Connections</Label>
                 <Select
@@ -388,7 +389,11 @@ export default function CheckoutCard() {
                 ))}
               </TabsList>
               {fields.map((field, index) => (
-                <TabsContent key={field.id} value={(index + 1).toString()}>
+                <TabsContent
+                  key={field.id}
+                  value={(index + 1).toString()}
+                  className="flex flex-col gap-4"
+                >
                   <div>
                     <Label htmlFor={`mac-address-${index}`}>Mac Address</Label>
                     <p className="mb-2 text-sm text-muted-foreground">
@@ -444,11 +449,29 @@ export default function CheckoutCard() {
                 </TabsContent>
               ))}
             </Tabs>
-
+            <div>
+              <Label htmlFor="additional_info">Additional Info</Label>
+              <Controller
+                name="additional_info"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    id="additional_info"
+                    {...field}
+                    placeholder="Any additional info"
+                  />
+                )}
+              />
+              {errors.additional_info && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.additional_info.message}
+                </p>
+              )}
+            </div>
             <div>
               <Label>Addons</Label>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {Object.entries(addons).map(([key, value]) => (
                   <div
                     key={key}

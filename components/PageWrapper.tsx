@@ -4,14 +4,16 @@ import React from "react";
 const PageWrapper = ({
   children,
   className = "",
+  notContainer = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  notContainer?: boolean;
 }) => {
   return (
     <div
       className={cn(
-        "container flex min-h-[calc(100vh-80px)] flex-col items-center",
+        `${notContainer ? "sm:container" : "container"} flex min-h-[calc(100vh-80px)] flex-col items-center`,
         className,
       )}
     >

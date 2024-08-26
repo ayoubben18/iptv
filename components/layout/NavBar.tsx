@@ -43,7 +43,7 @@ const NavBar = () => {
         <Link href={`/`} className="text-3xl font-black">
           RONOTV
         </Link>
-        <div className="hidden items-center md:flex">
+        <div className="hidden items-center lg:flex">
           {links.map((link, index) => (
             <Button
               key={index}
@@ -63,7 +63,7 @@ const NavBar = () => {
         </div>
         <Drawer>
           <DrawerTrigger asChild>
-            <Button variant="outline" size="icon" className="md:hidden">
+            <Button variant="outline" size="icon" className="lg:hidden">
               <Menu className="h-4 w-4" />
               <span className="sr-only">Toggle menu</span>
             </Button>
