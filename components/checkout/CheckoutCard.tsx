@@ -1,6 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,9 +30,17 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
+import { Separator } from "../ui/separator";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientEnv } from "@/lib/env-client";
 
-export default function Component() {
+export default function CheckoutCard() {
+  const checkoutSchema = z.object({
+    name: z.string().min(5, "Name must be at least 5 characters"),
+    email: z.string().email("Invalid email address"),
+    phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
+  });
   const { data: offers, isLoading } = useQuery({
     queryKey: ["offers"],
     queryFn: () => getOffers(),
@@ -63,10 +77,36 @@ export default function Component() {
     return [offer, features, selectedPlan, arrayItems];
   }, [plan, connections, offers]);
 
-  const { control, watch } = useForm({
+  const {
+    control,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       devices: arrayItems.map(() => ({ device_type: "", mac_address: "" })),
+      name: "",
+      email: "",
+      phone: "",
     },
+    resolver: zodResolver(
+      z.object({
+        name: z.string().min(5, "Name must be at least 5 characters"),
+        email: z.string().email("Invalid email address"),
+        phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number"),
+        devices: z.array(
+          z.object({
+            device_type: z.string(),
+            mac_address: z
+              .string()
+              .regex(
+                /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
+                "Invalid MAC address format",
+              ),
+          }),
+        ),
+      }),
+    ),
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -95,7 +135,7 @@ export default function Component() {
     setAddons((prev) => ({ ...prev, [addon]: !prev[addon] }));
   };
   const { mutateAsync: checkout, isPending } = useMutation({
-    mutationFn: async (data) =>
+    mutationFn: async (data: z.infer<typeof checkoutSchema>) =>
       checkoutService({
         connections: connections,
         plan: plan,
@@ -104,15 +144,17 @@ export default function Component() {
         quick_delivery: addons.quickDelivery,
         price: totalPrice,
         devices: devices,
+        user_name: data.name,
+        user_email: data.email,
+        user_phone: data.phone,
       }),
     onSuccess: (data) => {
-      const id = data?.data?.id;
-      push(`${ClientEnv.NEXT_PUBLIC_REDIRECTION_SITE}/checkout?id=${id}`);
+      push(`${ClientEnv.NEXT_PUBLIC_REDIRECTION_SITE}/checkout?id=${data}`);
     },
   });
 
-  const handleCheckout = async () => {
-    toast.promise(checkout, {
+  const handleCheckout = async (data: z.infer<typeof checkoutSchema>) => {
+    toast.promise(checkout(data), {
       loading: "Checking out...",
       success: "Checkout successful!",
       error: "Checkout failed!",
@@ -123,21 +165,71 @@ export default function Component() {
 
   useEffect(() => {
     setTotalPrice(
-      parseFloat(selectedPlan?.price || "0") +
-        (addons.quickDelivery ? 1.99 : 0),
+      Number(
+        (
+          parseFloat(selectedPlan?.price || "0") +
+          (addons.quickDelivery ? 1.99 : 0)
+        ).toFixed(2),
+      ),
     );
   }, [selectedPlan, addons]);
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6 p-6 lg:flex-row">
+      <div className="flex w-full flex-col gap-6 p-6 lg:flex-row">
         <div className="flex-1 space-y-6">
-          <Skeleton className="h-20 w-full" />
-          <Skeleton className="h-20 w-full" />
-          <Skeleton className="h-20 w-full" />
+          <Card>
+            <CardHeader>
+              <CardTitle>Subscription Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <Label htmlFor="connections">Connections</Label>
+                  <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="flex-1">
+                  <Label htmlFor="plan">Plan</Label>
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Configure</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-40 w-full" />
+            </CardContent>
+          </Card>
         </div>
         <div className="lg:w-1/3">
-          <Skeleton className="h-96 w-full" />
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <div className="flex justify-between">
+                <span>Setup Fees</span>
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <Separator />
+              <div className="flex justify-between font-bold">
+                <span>Total Due Today</span>
+                <Skeleton className="h-6 w-20" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" disabled>
+                Checkout
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     );
@@ -146,6 +238,68 @@ export default function Component() {
   return (
     <div className="flex flex-col gap-6 p-6 lg:flex-row">
       <div className="flex-1 space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Personal Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <Input id="name" placeholder="Your full name" {...field} />
+                )}
+              />
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Your email address"
+                    {...field}
+                  />
+                )}
+              />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    id="phone"
+                    placeholder="Your phone number"
+                    {...field}
+                  />
+                )}
+              />
+              {errors.phone && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.phone.message}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Subscription Details</CardTitle>
@@ -252,6 +406,11 @@ export default function Component() {
                         />
                       )}
                     />
+                    {errors.devices?.[index]?.mac_address && (
+                      <p className="mt-1 text-sm text-red-500">
+                        {errors.devices?.[index]?.mac_address.message}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -342,7 +501,7 @@ export default function Component() {
           </div>
           <Button
             className="w-full"
-            onClick={handleCheckout}
+            onClick={handleSubmit(handleCheckout)}
             disabled={isPending}
           >
             <CreditCard className="mr-2 h-4 w-4" /> CHECKOUT

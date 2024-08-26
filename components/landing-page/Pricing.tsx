@@ -36,10 +36,22 @@ const Pricing = () => {
       </p>
 
       {isLoading ? (
-        <div className="flex flex-col gap-4">
-          <Skeleton className="h-20 w-full" />
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {[...Array(4)].map((_, index) => (
-            <Skeleton className="h-20 w-full" key={index} />
+            <Card key={index}>
+              <CardHeader>
+                <Skeleton className="h-6 w-3/4" />
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-3/4" />
+              </CardContent>
+              <CardFooter>
+                <Skeleton className="h-10 w-full" />
+              </CardFooter>
+            </Card>
           ))}
         </div>
       ) : (

@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blogs: {
+        Row: {
+          content: Json | null
+          created_at: string
+          id: number
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          id?: number
+        }
+        Relationships: []
+      }
       devices: {
         Row: {
           device_type: string
@@ -44,16 +62,19 @@ export type Database = {
           connections: string | null
           country_code: string | null
           created_at: string | null
-          email: string | null
-          full_name: string | null
           id: string
-          order_id: string | null
+          order_number: number
+          payement_email: string | null
+          payement_full_name: string | null
+          payement_order_id: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           quick_delivery: boolean | null
           status: string | null
           subscription_type: string | null
-          user_id: string
+          user_email: string | null
+          user_name: string | null
+          user_phone: string | null
           vod: boolean | null
         }
         Insert: {
@@ -61,16 +82,19 @@ export type Database = {
           connections?: string | null
           country_code?: string | null
           created_at?: string | null
-          email?: string | null
-          full_name?: string | null
           id?: string
-          order_id?: string | null
+          order_number?: never
+          payement_email?: string | null
+          payement_full_name?: string | null
+          payement_order_id?: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           quick_delivery?: boolean | null
           status?: string | null
           subscription_type?: string | null
-          user_id: string
+          user_email?: string | null
+          user_name?: string | null
+          user_phone?: string | null
           vod?: boolean | null
         }
         Update: {
@@ -78,27 +102,22 @@ export type Database = {
           connections?: string | null
           country_code?: string | null
           created_at?: string | null
-          email?: string | null
-          full_name?: string | null
           id?: string
-          order_id?: string | null
+          order_number?: never
+          payement_email?: string | null
+          payement_full_name?: string | null
+          payement_order_id?: string | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
           price?: number
           quick_delivery?: boolean | null
           status?: string | null
           subscription_type?: string | null
-          user_id?: string
+          user_email?: string | null
+          user_name?: string | null
+          user_phone?: string | null
           vod?: boolean | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_data: {
         Row: {
@@ -126,6 +145,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_most_occurring_country_codes: {
+        Args: {
+          limit_num: number
+        }
+        Returns: {
+          country_code: string
+          occurrences: number
+        }[]
+      }
       most_selling_plan: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -135,6 +163,15 @@ export type Database = {
         Returns: {
           plan_name: string
           count: number
+        }[]
+      }
+      total_payments_over_days: {
+        Args: {
+          num_days: number
+        }
+        Returns: {
+          payment_date: string
+          total_payments: number
         }[]
       }
       total_sales_overall: {

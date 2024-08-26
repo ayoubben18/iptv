@@ -1,15 +1,4 @@
 "use client";
-import React from "react";
-import { ChevronDown, Menu } from "lucide-react";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { SmoothScrollLink } from "../landing-page/Hero";
 import {
   Drawer,
   DrawerClose,
@@ -17,15 +6,28 @@ import {
   DrawerFooter,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { SmoothScrollLink } from "../landing-page/Hero";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 const links = [
   {
     name: "Pricing",
-    link: "#pricing",
+    link: "/#pricing",
   },
   {
-    name: "Order",
-    link: "/checkout",
+    name: "Free Trial",
+    link: "/free-trial",
+  },
+  {
+    name: "Setup Guide",
+    link: "/blogs",
+  },
+  {
+    name: "Channels List",
+    link: "/channels",
   },
   {
     name: "Support",
@@ -34,32 +36,14 @@ const links = [
 ];
 
 const NavBar = () => {
+  const router = useRouter();
   return (
     <div className="container mx-auto px-4">
       <div className="flex h-20 items-center justify-between">
         <Link href={`/`} className="text-3xl font-black">
-          IPTV
+          RONOTV
         </Link>
         <div className="hidden items-center md:flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="link"
-                className="flex items-center gap-2 text-xl text-black dark:text-white"
-              >
-                Library
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuItem>
-                <Link href={`/profile`}>Profile</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href={`/settings`}>Settings</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           {links.map((link, index) => (
             <Button
               key={index}
@@ -75,6 +59,7 @@ const NavBar = () => {
               )}
             </Button>
           ))}
+          <Button onClick={() => router.push("/#pricing")}>ORDER NOW</Button>
         </div>
         <Drawer>
           <DrawerTrigger asChild>
@@ -86,29 +71,6 @@ const NavBar = () => {
           <DrawerContent className="bg-white dark:bg-gray-800">
             <div className="mx-auto w-full max-w-sm">
               <div className="flex flex-col items-center space-y-4 py-6">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="flex w-full items-center justify-center gap-2 text-xl"
-                    >
-                      Library
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem>
-                      <Link href={`/profile`} className="w-full">
-                        Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href={`/settings`} className="w-full">
-                        Settings
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
                 {links.map((link, index) => (
                   <Button
                     key={index}
@@ -126,6 +88,9 @@ const NavBar = () => {
                     )}
                   </Button>
                 ))}
+                <Button onClick={() => router.push("/#pricing")}>
+                  ORDER NOW
+                </Button>
               </div>
               <DrawerFooter>
                 <DrawerClose asChild>

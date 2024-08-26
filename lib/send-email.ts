@@ -4,11 +4,13 @@ import nodemailer from "nodemailer";
 import { ServerEnv } from "./env-server";
 import { z } from "zod";
 import logger from "./logger";
+import { render } from "@react-email/render";
+import SupportEmail from "@/constants/SupportEmailTemplate";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: "titan",
   host: ServerEnv.SMTP_SERVER_HOST,
-  port: 587,
+  port: 465,
   secure: true,
   auth: {
     user: ServerEnv.SMTP_SERVER_USERNAME,
@@ -19,23 +21,31 @@ const transporter = nodemailer.createTransport({
 const emailSchema = z.object({
   subject: z.string(),
   text: z.string(),
+  name: z.string(),
+  email: z.string().email(),
 });
 
-const sendEmail = async ({ subject, text }: z.infer<typeof emailSchema>) => {
+const sendSupportEmail = async ({
+  subject,
+  text,
+  name,
+  email,
+}: z.infer<typeof emailSchema>) => {
   const isVerified = await transporter.verify();
   if (!isVerified) {
     throw new Error("SMTP Server is not verified");
   }
 
+  const emailHtml = render(SupportEmail({ name, email, message: text }));
+
   const info = await transporter.sendMail({
     from: ServerEnv.SMTP_SERVER_USERNAME,
     to: ServerEnv.SITE_MAIL_RECIEVER,
-    subject: subject,
-    text: text,
-    html: "",
+    subject: `Support Email from ${name}`,
+    html: await emailHtml,
   });
   logger.info("New Email sent", { subject, text, info: info.response });
   return info;
 };
 
-export { sendEmail };
+export { sendSupportEmail };

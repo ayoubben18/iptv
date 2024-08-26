@@ -1,7 +1,8 @@
-import { Tables, Enums } from "./supabase";
+import { Tables } from "./supabase";
 
 export type Subscriptions = Tables<"subscriptions">;
 export type Devices = Tables<"devices">;
+export type Blogs = Tables<"blogs">;
 
 export enum StatusEnum {
   // 'draft', 'paid', 'completed'

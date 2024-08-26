@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useMutation } from "@tanstack/react-query";
-import { sendEmail } from "@/lib/send-email";
+import { sendSupportEmail } from "@/lib/send-email";
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Please Enter Your Name" }),
   email: z.string().email({ message: "Please Enter a Valid Email Address" }),
@@ -25,7 +25,7 @@ const contactFormSchema = z.object({
 export default function EmailForm() {
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ["sendEmail"],
-    mutationFn: sendEmail,
+    mutationFn: sendSupportEmail,
     onError: (error) => {
       console.log(error);
     },
@@ -49,7 +49,9 @@ export default function EmailForm() {
     const handlSubmitToast = async () => {
       await mutateAsync({
         subject: `New message from ${name}`,
-        text: message + `\n\nSent by: ${email}`,
+        text: message,
+        name: name,
+        email: email,
       });
     };
 

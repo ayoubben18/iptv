@@ -1,85 +1,51 @@
 "use server";
 
-import { authenticatedAction } from "@/authenticatedActions";
-import { planPrices, StatusEnum, SubscriptionPlan } from "@/types/tableTypes";
+import logger from "@/lib/logger";
+import { StatusEnum, SubscriptionPlan } from "@/types/tableTypes";
 import { z } from "zod";
 import { insertDevices } from "../data/devices-data";
-import {
-  getSubscriptions,
-  insertSubscription,
-} from "../data/subscriptions-data";
-import logger from "@/lib/logger";
+import { insertSubscription } from "../data/subscriptions-data";
 
-const subscriptionSchema = z.object({
+const checkoutSchema = z.object({
   plan: z.nativeEnum(SubscriptionPlan),
   price: z.number().positive().multipleOf(0.01),
-  email: z.string().email(),
-  full_name: z.string(),
-  country_code: z.string(),
-  order_id: z.string(),
+  user_name: z.string(),
+  user_email: z.string().email(),
+  user_phone: z.string(),
+  connections: z.enum(["1", "2", "3", "4", "5"]),
+  adult_content: z.boolean(),
+  quick_delivery: z.boolean(),
+  vod: z.boolean(),
+  devices: z.array(
+    z.object({
+      mac_address: z.string(),
+      device_type: z.string(),
+    }),
+  ),
 });
 
-const refinedSubscriptionSchema = subscriptionSchema.refine(
-  (data) => data.price === planPrices[data.plan],
-  {
-    message: "Price does not match the selected plan",
-    path: ["price"],
-  },
-);
-
-const insertSubscriptionService = authenticatedAction
-  .schema(refinedSubscriptionSchema)
-  .action(async ({ ctx: { userId }, parsedInput }) => {
-    const sub = await insertSubscription({
-      ...parsedInput,
-      user_id: userId,
-    });
-
-    return sub;
+const checkoutService = async (data: z.infer<typeof checkoutSchema>) => {
+  const sub = await insertSubscription({
+    plan: data.plan,
+    price: data.price,
+    connections: data.connections,
+    adult_content: data.adult_content,
+    quick_delivery: data.quick_delivery,
+    vod: data.vod,
+    status: StatusEnum.Draft,
+    user_email: data.user_email,
+    user_name: data.user_name,
+    user_phone: data.user_phone,
   });
+  const devices = data.devices.map((device) => ({
+    ...device,
+    subscription_id: sub.id,
+  }));
+  const devicesInserted = await insertDevices(devices);
+  console.log(data);
 
-const getSubscriptionsService = authenticatedAction.action(
-  async ({ ctx: { userId, email } }) => {
-    const subs = await getSubscriptions(userId);
-    return { subs, email };
-  },
-);
+  logger.info("Draft Subscription created");
+  return sub.id;
+};
 
-const checkoutService = authenticatedAction
-  .schema(
-    z.object({
-      plan: z.nativeEnum(SubscriptionPlan),
-      price: z.number().positive().multipleOf(0.01),
-      connections: z.enum(["1", "2", "3", "4", "5"]),
-      adult_content: z.boolean(),
-      quick_delivery: z.boolean(),
-      vod: z.boolean(),
-      devices: z.array(
-        z.object({
-          mac_address: z.string(),
-          device_type: z.string(),
-        }),
-      ),
-    }),
-  )
-  .action(async ({ ctx: { userId }, parsedInput }) => {
-    const sub = await insertSubscription({
-      plan: parsedInput.plan,
-      price: parsedInput.price,
-      connections: parsedInput.connections,
-      adult_content: parsedInput.adult_content,
-      quick_delivery: parsedInput.quick_delivery,
-      vod: parsedInput.vod,
-      user_id: userId,
-      status: StatusEnum.Draft,
-    });
-    const devices = parsedInput.devices.map((device) => ({
-      ...device,
-      subscription_id: sub.id,
-    }));
-    const devicesInserted = await insertDevices(devices);
-    logger.info("Draft Subscription created", { sub, devicesInserted });
-    return { id: sub.id };
-  });
-
-export { checkoutService, getSubscriptionsService, insertSubscriptionService };
+export { checkoutService };

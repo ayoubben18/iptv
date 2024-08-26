@@ -1,13 +1,13 @@
+import CountriesSelect from "@/components/channels/CountriesSelect";
 import PageWrapper from "@/components/PageWrapper";
-import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
-const loading = () => {
+const page = () => {
   return (
     <PageWrapper className="justify-center">
-      <Skeleton className="h-72 w-full" />
+      <CountriesSelect />
     </PageWrapper>
   );
 };
 
-export default loading;
+export default page;
