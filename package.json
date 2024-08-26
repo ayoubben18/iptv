@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "graphql-codegen --config codegen.ts",
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "@apollo/client": "^3.11.2",
@@ -36,8 +36,10 @@
     "@supabase/supabase-js": "^2.45.0",
     "@t3-oss/env-nextjs": "^0.11.0",
     "@tanstack/react-query": "^5.51.21",
+    "@types/cheerio": "^0.22.35",
     "@upstash/redis": "^1.34.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.5",
+    "cheerio": "^1.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -61,6 +63,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
+    "use-debounce": "^10.0.3",
     "vaul": "^0.9.1",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
@@ -68,7 +71,8 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.8",
     "@tailwindcss/typography": "^0.5.14",
-    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20",
