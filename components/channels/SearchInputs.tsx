@@ -13,13 +13,14 @@ import {
 
 const searchValues = [
   {
-    value: SearchType.VOD,
-    label: "Movies",
-  },
-  {
     value: SearchType.LIVE,
     label: "Channels",
   },
+  {
+    value: SearchType.VOD,
+    label: "Movies",
+  },
+
   {
     value: SearchType.SERIES,
     label: "Series",
@@ -29,7 +30,7 @@ const searchValues = [
 const SearchInputs = () => {
   const [search, setSearch] = useQueryState("search");
   const [typeSearch, setTypeSearch] = useQueryState<SearchType>("type_search", {
-    defaultValue: SearchType.VOD,
+    defaultValue: SearchType.LIVE,
     parse: (value) => value as SearchType,
   });
 

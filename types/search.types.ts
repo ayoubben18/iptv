@@ -1,6 +1,5 @@
 export type SearchResult = {
   title: string;
-  imageUrl: string;
   group: string;
 };
 

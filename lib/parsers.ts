@@ -9,10 +9,9 @@ function parseSearchResults(html: string): SearchResult[] {
 
   resultsContainer.find("li").each((_, element) => {
     const title = cleanText($(element).find("h3").text());
-    const imageUrl = $(element).find("img").attr("src") || "";
     const group = cleanText($(element).find("h4 b").text());
 
-    searchResults.push({ title, imageUrl, group });
+    searchResults.push({ title, group });
   });
 
   return searchResults;
