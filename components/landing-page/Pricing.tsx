@@ -101,11 +101,11 @@ const PricingCard = ({
     router.push(`/checkout?plan=${name}&connections=${connection}`);
   };
   return (
-    <Card>
+    <Card className="flex h-full flex-col">
       <CardHeader>
         <CardTitle>{placeholder}</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-start gap-2">
+      <CardContent className="flex flex-grow flex-col items-start gap-2">
         {[
           ...(offerName ? [{ icon: Link, text: offerName }] : []),
           ...basicFeatures,
@@ -118,9 +118,9 @@ const PricingCard = ({
             {feature.text}
           </li>
         ))}
-        <h1 className="text-4xl font-black">$ {price}</h1>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="mt-auto flex flex-col items-center">
+        <h1 className="mb-4 text-4xl font-black">$ {price}</h1>
         <Button className="w-full" onClick={handleClick}>
           Order
         </Button>

@@ -20,7 +20,6 @@ const features = [
       <Image
         priority
         fill
-        objectFit="cover"
         alt="Feature 1"
         src="/show.jpeg"
         className="absolute h-full w-full object-cover opacity-20 transition-all duration-300 ease-out group-hover:scale-105"
@@ -40,7 +39,6 @@ const features = [
       <Image
         priority
         fill
-        objectFit="cover"
         alt="Feature 1"
         src="/support.jpg"
         className="absolute h-full w-full object-cover opacity-20 transition-all duration-300 ease-out group-hover:scale-105"
@@ -59,7 +57,6 @@ const features = [
       <Image
         priority
         fill
-        objectFit="cover"
         alt="Feature 1"
         src="/watch.jpg"
         className="absolute h-full w-full object-cover opacity-20 transition-all duration-300 ease-out group-hover:scale-105"
@@ -78,7 +75,6 @@ const features = [
       <Image
         priority
         fill
-        objectFit="cover"
         alt="Feature 1"
         src="/paypal.jpg"
         className="absolute h-full w-full object-cover opacity-20 transition-all duration-300 ease-out group-hover:scale-105"
@@ -97,7 +93,6 @@ const features = [
       <Image
         priority
         fill
-        objectFit="cover"
         alt="Feature 1"
         src="https://rwxfqslhsyxt7n8g.public.blob.vercel-storage.com/1-akI7VA3GVDi6A0gQu3J8BOQVFqYaWw.webp"
         className="absolute h-full w-full object-cover opacity-20 transition-all duration-300 ease-out group-hover:scale-105"
