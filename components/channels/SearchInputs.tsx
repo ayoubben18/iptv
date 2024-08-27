@@ -35,7 +35,7 @@ const SearchInputs = () => {
   });
 
   return (
-    <div className="flex w-full gap-2">
+    <div className="flex w-full flex-col gap-2 sm:flex-row">
       <Input
         value={search ?? ""}
         onChange={(e) => setSearch(e.target.value)}

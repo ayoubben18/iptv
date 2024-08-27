@@ -11,7 +11,7 @@ const Hero = () => {
   const router = useRouter();
   return (
     <SectionWrapper className="lg:flex-row">
-      <div className="flex flex-col gap-6 text-start">
+      <div className="flex flex-col gap-6 text-start" id="about">
         <h1 className="text-5xl font-black">
           Endless Entertainment, All on IPTV
         </h1>
@@ -29,7 +29,7 @@ const Hero = () => {
           </Button>
           <Button
             variant={"secondary"}
-            onClick={() => router.push(`/checkout`)}
+            onClick={() => router.push(`/free-trial`)}
             className="border-[1px] border-black"
           >
             Free Trial
