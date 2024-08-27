@@ -21,7 +21,7 @@ const MovieCard = ({ img }: { img: string }) => {
   return (
     <figure
       className={cn(
-        "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border",
+        "relative h-full w-40 cursor-pointer overflow-hidden rounded-xl border sm:w-64",
         // light styles
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
         // dark styles
@@ -39,7 +39,7 @@ const MovieCard = ({ img }: { img: string }) => {
 
 export function MoviesSlider() {
   return (
-    <div className="relative flex h-[700px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+    <div className="relative flex h-[550px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background sm:h-[700px] md:shadow-xl">
       <Marquee pauseOnHover className="[--duration:20s]">
         {firstRow.map((img, index) => (
           <MovieCard key={`first-${index}`} img={img} />

@@ -106,18 +106,20 @@ const PricingCard = ({
         <CardTitle>{placeholder}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-grow flex-col items-start gap-2">
-        {[
-          ...(offerName ? [{ icon: Link, text: offerName }] : []),
-          ...basicFeatures,
-          ...(features.length > 0
-            ? [{ icon: DollarSign, text: features[0] }]
-            : []),
-        ].map((feature, index) => (
-          <li key={index} className="flex items-center gap-2">
-            {feature.icon && <feature.icon size={16} />}
-            {feature.text}
-          </li>
-        ))}
+        <ul className="flex flex-col gap-2">
+          {[
+            ...(offerName ? [{ icon: Link, text: offerName }] : []),
+            ...basicFeatures,
+            ...(features.length > 0
+              ? [{ icon: DollarSign, text: features[0] }]
+              : []),
+          ].map((feature, index) => (
+            <li key={index} className="flex items-center gap-2">
+              {feature.icon && <feature.icon size={16} />}
+              {feature.text}
+            </li>
+          ))}
+        </ul>
       </CardContent>
       <CardFooter className="mt-auto flex flex-col items-center">
         <h1 className="mb-4 text-4xl font-black">$ {price}</h1>

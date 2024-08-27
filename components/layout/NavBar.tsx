@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/drawer";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { SmoothScrollLink } from "../landing-page/Hero";
-import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
+import Image from "next/image";
 
 const links = [
   {
@@ -40,26 +40,32 @@ const NavBar = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="flex h-20 items-center justify-between">
-        <Link href={`/`} className="text-3xl font-black">
-          RONOTV
+        <Link href={`/`}>
+          <Image
+            src="/logo.png"
+            alt="RONOTV"
+            priority
+            width={180}
+            height={180}
+          />
         </Link>
-        <div className="hidden items-center lg:flex">
+        <div className="hidden items-center gap-2 lg:flex xl:gap-6">
           {links.map((link, index) => (
             <Button
               key={index}
               variant={"link"}
               className="text-xl text-black dark:text-white"
+              onClick={() => router.push(link.link)}
             >
-              {link.link === "#pricing" ? (
-                <SmoothScrollLink href={link.link}>
-                  {link.name}
-                </SmoothScrollLink>
-              ) : (
-                <Link href={link.link}>{link.name}</Link>
-              )}
+              {link.name}
             </Button>
           ))}
-          <Button onClick={() => router.push("/#pricing")}>ORDER NOW</Button>
+          <Button
+            className="text-xl text-black dark:text-white"
+            onClick={() => router.push("/#pricing")}
+          >
+            ORDER NOW
+          </Button>
         </div>
         <Drawer>
           <DrawerTrigger asChild>
@@ -76,16 +82,9 @@ const NavBar = () => {
                     key={index}
                     variant={"ghost"}
                     className="w-full text-xl"
+                    onClick={() => router.push(link.link)}
                   >
-                    {link.link === "#pricing" ? (
-                      <SmoothScrollLink href={link.link}>
-                        {link.name}
-                      </SmoothScrollLink>
-                    ) : (
-                      <Link href={link.link} className="w-full">
-                        {link.name}
-                      </Link>
-                    )}
+                    {link.name}
                   </Button>
                 ))}
                 <Button onClick={() => router.push("/#pricing")}>

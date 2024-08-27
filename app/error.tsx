@@ -1,5 +1,11 @@
 "use client";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "500",
+  description: "Internal server error",
+};
 
 export default function error() {
   return (

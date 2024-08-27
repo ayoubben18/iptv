@@ -1,10 +1,13 @@
 import BlogsList from "@/components/blogs/BlogsList";
 import PageWrapper from "@/components/PageWrapper";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlusCircle } from "lucide-react";
-import Link from "next/link";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description: "Blogs page and setup guide",
+};
 
 const page = () => {
   return (

@@ -13,7 +13,7 @@ const Insights = () => {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-col items-center">
-        <CardTitle>Analytics</CardTitle>
+        <CardTitle className="text-3xl">Analytics</CardTitle>
         <CardDescription>
           Our team is dedicated to providing the best possible service to our
           customers.

@@ -15,8 +15,18 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 export const metadata: Metadata = {
-  title: "IPTV",
-  description: "Best Iptv provider in the world",
+  metadataBase: new URL("https://www.ronotv.com"),
+  title: {
+    default: "RONOTV",
+    template: "%s | RONOTV",
+  },
+  keywords: ["iptv", "movies", "series"],
+  description: "Best new iptv provider in the world",
+  openGraph: {
+    title: "RONOTV",
+    description: "Best new iptv provider in the world",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({

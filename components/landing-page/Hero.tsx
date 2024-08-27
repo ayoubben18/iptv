@@ -1,11 +1,9 @@
 "use client";
-import Image from "next/image";
-import React from "react";
-import { Button } from "../ui/button";
 import { CircleCheck } from "lucide-react";
-import SectionWrapper from "../shared/SectionWrapper";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import SectionWrapper from "../shared/SectionWrapper";
+import { Button } from "../ui/button";
 
 const Hero = () => {
   const router = useRouter();
@@ -21,11 +19,12 @@ const Hero = () => {
         </p>
         <p className="text-2xl font-extralight">Our unprecedented features</p>
         <div className="mt-6 flex gap-4">
-          <Button className="flex items-center gap-2">
+          <Button
+            className="flex items-center gap-2"
+            onClick={() => router.push(`#pricing`)}
+          >
             <CircleCheck className="h-4 w-4" />
-            <SmoothScrollLink href={`#pricing`}>
-              Discover our library
-            </SmoothScrollLink>
+            Discover our library
           </Button>
           <Button
             variant={"secondary"}
@@ -48,28 +47,6 @@ const Hero = () => {
         }}
       />
     </SectionWrapper>
-  );
-};
-
-export const SmoothScrollLink = ({
-  href,
-  children,
-}: {
-  href: string;
-  children: string;
-}) => {
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  return (
-    <Link href={href} onClick={handleClick}>
-      {children}
-    </Link>
   );
 };
 

@@ -23,6 +23,7 @@ export const handleStatus = <T>(
         return data as T[];
       }
       return data as T;
+    case 406:
     case 404:
       return null;
     default:

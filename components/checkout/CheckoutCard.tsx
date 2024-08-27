@@ -35,6 +35,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClientEnv } from "@/lib/env-client";
 import { Textarea } from "../ui/textarea";
+import { PhoneInput } from "../ui/phone-input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { formatToMacAddress } from "@/lib/parsers";
 
 const checkoutSchema = z.object({
   name: z.string().min(5, "Name must be at least 5 characters"),
@@ -44,7 +53,7 @@ const checkoutSchema = z.object({
   devices: z.array(
     z.object({
       device_type: z.string(),
-      mac_address: z.string(),
+      mac_address: z.string().length(12),
     }),
   ),
 });
@@ -134,7 +143,10 @@ export default function CheckoutCard() {
         vod: addons.vod,
         quick_delivery: addons.quickDelivery,
         price: totalPrice,
-        devices: data.devices,
+        devices: data.devices.map((device) => ({
+          mac_address: formatToMacAddress(device.mac_address),
+          device_type: device.device_type,
+        })),
         user_name: data.name,
         user_email: data.email,
         user_phone: data.phone,
@@ -151,7 +163,9 @@ export default function CheckoutCard() {
     toast.promise(checkout(data), {
       loading: "Checking out...",
       success: "Checkout successful!",
-      error: "Checkout failed!",
+      error: (error) => {
+        return error.message;
+      },
     });
   };
 
@@ -284,7 +298,8 @@ export default function CheckoutCard() {
                 name="phone"
                 control={control}
                 render={({ field }) => (
-                  <Input
+                  <PhoneInput
+                    defaultCountry="US"
                     id="phone"
                     placeholder="Your phone number"
                     className="max-w-lg"
@@ -404,13 +419,52 @@ export default function CheckoutCard() {
                       name={`devices.${index}.mac_address`}
                       control={control}
                       render={({ field }) => (
-                        <Input
+                        <InputOTP
+                          pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                          maxLength={12}
                           id={`mac-address-${index}`}
-                          placeholder="00:1A:79:XX:XX:XX"
                           {...field}
-                        />
+                        >
+                          <InputOTPGroup>
+                            <InputOTPSlot index={0} />
+                            <InputOTPSlot index={1} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={2} />
+                            <InputOTPSlot index={3} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={4} />
+                            <InputOTPSlot index={5} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={6} />
+                            <InputOTPSlot index={7} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={8} />
+                            <InputOTPSlot index={9} />
+                          </InputOTPGroup>
+                          <InputOTPSeparator />
+                          <InputOTPGroup>
+                            <InputOTPSlot index={10} />
+                            <InputOTPSlot index={11} />
+                          </InputOTPGroup>
+                        </InputOTP>
                       )}
                     />
+                    {watch(`devices.${index}.mac_address`) && (
+                      <h1>
+                        You entered:{" "}
+                        {formatToMacAddress(
+                          watch(`devices.${index}.mac_address`),
+                        )}
+                      </h1>
+                    )}
                     {errors.devices?.[index]?.mac_address && (
                       <p className="mt-1 text-sm text-red-500">
                         {errors.devices?.[index]?.mac_address.message}

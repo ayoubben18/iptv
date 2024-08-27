@@ -91,10 +91,10 @@ const Footer = () => {
         <div className="mt-7 flex items-center justify-between">
           <h1 className="text-2xl font-black">RONOTV</h1>
           <div className="flex gap-6">
-            <Link href="tel:+1234567890">
+            <Link href="tel:+1234567890" aria-label="Call us">
               <Phone className="h-6 w-6" />
             </Link>
-            <Link href="mailto:order@ronotv.com">
+            <Link href="mailto:order@ronotv.com" aria-label="Email us">
               <Mail className="h-6 w-6" />
             </Link>
           </div>

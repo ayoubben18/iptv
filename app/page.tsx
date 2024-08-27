@@ -5,6 +5,11 @@ import Insights from "@/components/landing-page/Insights";
 import { MoviesSlider } from "@/components/landing-page/MoviesSlider";
 import Pricing from "@/components/landing-page/Pricing";
 import PageWrapper from "@/components/PageWrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default function Home() {
   return (

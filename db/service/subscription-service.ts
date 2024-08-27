@@ -19,7 +19,7 @@ const checkoutSchema = z.object({
   additional_info: z.string().nullable(),
   devices: z.array(
     z.object({
-      mac_address: z.string(),
+      mac_address: z.string().length(17),
       device_type: z.string(),
     }),
   ),
