@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Marquee from "@/components/magicui/marquee";
+import Image from "next/image";
 
 const movieImages = [
   "https://rwxfqslhsyxt7n8g.public.blob.vercel-storage.com/MV5BYjhiZTQzZGYtMjJmZS00YTQ0LTg4NmItZGE2NTcwYmNmMjk4XkEyXkFqcGdeQXVyMTA0MDM3NDg4._V1_-j4k3Oj0ibvPDoV5qyMlPOZD8nOX1jc.jpg",
@@ -28,7 +29,10 @@ const MovieCard = ({ img }: { img: string }) => {
         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
       )}
     >
-      <img
+      <Image
+        width={200}
+        height={300}
+        priority
         src={img}
         alt="Movie poster"
         className="h-full w-full object-cover transition-all duration-300 ease-in-out hover:scale-105"
