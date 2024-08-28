@@ -422,6 +422,7 @@ export default function CheckoutCard() {
                         <InputOTP
                           pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
                           maxLength={12}
+                          inputMode="text"
                           id={`mac-address-${index}`}
                           {...field}
                         >
