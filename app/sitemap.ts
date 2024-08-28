@@ -2,7 +2,7 @@ import { getBlogs } from "@/db/data/blogs-data";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.ronotv.com";
+  const baseUrl = "https://ronotv.com";
   const blogs = await getBlogs(10);
   const blogsData = blogs.map((blog) => ({
     url: `${baseUrl}/blogs/${blog.id}`,

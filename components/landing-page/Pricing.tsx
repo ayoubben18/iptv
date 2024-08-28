@@ -1,7 +1,6 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getOffers } from "@/db/data/redis-data";
-import { usePlanStore } from "@/stores/usePlanStore";
 import { Plan } from "@/types/plan.types";
 import { useQuery } from "@tanstack/react-query";
 import { DollarSign, Link } from "lucide-react";

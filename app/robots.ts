@@ -14,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
       ],
       disallow: [],
     },
-    sitemap: "https://www.ronotv.com/sitemap.xml",
+    sitemap: "https://ronotv.com/sitemap.xml",
   };
 }
