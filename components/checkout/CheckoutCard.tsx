@@ -458,7 +458,7 @@ export default function CheckoutCard() {
                       )}
                     />
                     {watch(`devices.${index}.mac_address`) && (
-                      <h1>
+                      <h1 className="text-primary">
                         You entered:{" "}
                         {formatToMacAddress(
                           watch(`devices.${index}.mac_address`),
