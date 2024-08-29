@@ -9,6 +9,7 @@ interface BlogContent {
   id: string;
   created_at: string;
   content: JSONContent;
+  title: string;
 }
 
 const insertBlog = async (content: string) => {
@@ -24,11 +25,9 @@ const insertBlog = async (content: string) => {
   return handleStatus(status, data, error) as Blogs;
 };
 
-const getBlogs = async (limit: number) => {
+const getBlogs = async () => {
   let query = supabase.from("blogs").select("*");
-  if (limit) {
-    query = query.limit(limit);
-  }
+
   const { data, error, status } = await query;
 
   return handleStatus(status, data, error) as unknown as BlogContent[];
@@ -53,11 +52,11 @@ const updateBlog = async (id: string, content: string) => {
   return handleStatus(status, data, error);
 };
 
-const getBlog = async (id: string) => {
+const getBlog = async (title: string) => {
   const { data, error, status } = await supabase
     .from("blogs")
     .select("*")
-    .eq("id", id)
+    .eq("title", title)
     .single();
 
   return handleStatus(status, data, error) as unknown as BlogContent;

@@ -12,17 +12,21 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const BlogsList = async () => {
-  const blogs = await getBlogs(10);
+  const blogs = await getBlogs();
   if (!blogs) return notFound();
 
   return (
     <div className="grid aspect-video w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {blogs.map(({ id, created_at, content }, index) => {
-        const { title, description, image } = getBlogCreationTime(content);
+      {blogs.map(({ id, created_at, content, title }, index) => {
+        const {
+          title: BlogTitle,
+          description,
+          image,
+        } = getBlogCreationTime(content);
         return (
           <Card className="max-w-sm overflow-hidden" key={id}>
             <div className="relative aspect-video">
-              <Link href={`/blogs/${id}`}>
+              <Link href={`/blogs/${title}`}>
                 <Image
                   src={image}
                   alt="The blog image"
@@ -34,7 +38,9 @@ const BlogsList = async () => {
             </div>
             <CardHeader>
               <h2 className="line-clamp-2 text-xl font-semibold">
-                {title.length > 30 ? title.slice(0, 30) + "..." : title}
+                {BlogTitle.length > 30
+                  ? BlogTitle.slice(0, 30) + "..."
+                  : BlogTitle}
               </h2>
             </CardHeader>
             <CardContent>

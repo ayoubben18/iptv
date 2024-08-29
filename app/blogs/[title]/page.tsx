@@ -7,10 +7,10 @@ import { notFound } from "next/navigation";
 export const generateMetadata = async ({
   params,
 }: {
-  params: { id: string };
+  params: { title: string };
 }) => {
   try {
-    const blog = await getBlog(params.id);
+    const blog = await getBlog(params.title);
     if (!blog) throw new Error("No blog found");
     const { title, description, image } = getBlogCreationTime(blog.content);
     return {
@@ -27,23 +27,23 @@ export const generateMetadata = async ({
 
 export const generateStaticParams = async () => {
   try {
-    const blogs = await getBlogs(10);
+    const blogs = await getBlogs();
     if (!blogs) throw new Error("No blogs found");
     return blogs.map((blog) => ({
-      id: blog.id.toString(),
+      title: blog.title,
     }));
   } catch (error) {
     return notFound();
   }
 };
 
-const page = async ({ params }: { params: { id: string } }) => {
-  const blog = await getBlog(params.id);
+const page = async ({ params }: { params: { title: string } }) => {
+  const blog = await getBlog(params.title);
 
   if (!blog) return notFound();
   return (
     <PageWrapper className="my-0 sm:my-20">
-      <BlogWrapper content={blog.content} id={params.id} />
+      <BlogWrapper content={blog.content} />
     </PageWrapper>
   );
 };

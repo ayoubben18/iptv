@@ -7,11 +7,10 @@ import { EditorContent, EditorRoot, JSONContent } from "novel";
 import { defaultExtensions } from "./extensions";
 
 interface BlogWrapperProps {
-  id: string;
   content: JSONContent;
 }
 
-const BlogWrapper = ({ id, content }: BlogWrapperProps) => {
+const BlogWrapper = ({ content }: BlogWrapperProps) => {
   const extensions = [...defaultExtensions];
   const { push } = useRouter();
 

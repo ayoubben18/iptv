@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://ronotv.com";
-  const blogs = await getBlogs(10);
+  const blogs = await getBlogs();
   const blogsData = blogs.map((blog) => ({
     url: `${baseUrl}/blogs/${blog.id}`,
     lastModified: blog.created_at,

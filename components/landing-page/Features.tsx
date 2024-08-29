@@ -109,7 +109,10 @@ const features = [
 
 export async function Features() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div
+      className="flex flex-col items-center justify-center gap-4"
+      id="features"
+    >
       <div className="flex flex-col items-center justify-center gap-2">
         <h1 className="text-5xl font-bold sm:text-6xl">Features</h1>
         <p className="max-w-4xl text-center text-lg">
