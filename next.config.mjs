@@ -10,11 +10,6 @@ const nextConfig = withLogtail({
   redirects: async () => {
     return [
       {
-        source: "/blogs/:title",
-        destination: "/blogs/:title",
-        permanent: true,
-      },
-      {
         source: "/services",
         destination: "/blogs",
         permanent: true,

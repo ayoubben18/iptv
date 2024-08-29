@@ -26,7 +26,9 @@ const insertBlog = async (content: string) => {
 };
 
 const getBlogs = async () => {
-  let query = supabase.from("blogs").select("*");
+  let query = supabase.from("blogs").select("*").order("created_at", {
+    ascending: true,
+  });
 
   const { data, error, status } = await query;
 
