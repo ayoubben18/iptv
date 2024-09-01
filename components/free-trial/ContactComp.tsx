@@ -11,8 +11,8 @@ import {
 import { MessageCircle, Phone } from "lucide-react";
 
 const ContactComp = () => {
-  const phoneNumber = "+1234567890"; // Replace with your actual WhatsApp number
-  const message = "Hello! I'd like to get in touch with you."; // Pre-filled message
+  const phoneNumber = "+212777737974"; // Replace with your actual WhatsApp number
+  const message = "Hello! I'd like to get in touch with RONOTV."; // Pre-filled message
 
   const handleWhatsAppClick = () => {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
