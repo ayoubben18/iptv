@@ -40,7 +40,7 @@ const sendSupportEmail = async ({
 
   const info = await transporter.sendMail({
     from: ServerEnv.SMTP_SERVER_USERNAME,
-    to: ServerEnv.SITE_MAIL_RECIEVER,
+    to: "contact@ronotv.com",
     subject: `Support Email from ${name}`,
     html: await emailHtml,
   });
