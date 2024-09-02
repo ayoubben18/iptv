@@ -66,11 +66,7 @@ export default function RootLayout({
             fontSans.variable,
           )}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute="class" defaultTheme="dark">
             <Toaster richColors position="top-center" theme="dark" />
             <NavBar />
             {children}

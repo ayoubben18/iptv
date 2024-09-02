@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import DarkModeSwitch from "../shared/DarkModeSwitch";
 
 const links = [
   {
@@ -53,19 +54,23 @@ const NavBar = () => {
           {links.map((link, index) => (
             <Button
               key={index}
-              variant={"link"}
-              className="text-xl text-black dark:text-white"
+              variant={"linkHover2"}
+              className="text-base text-black dark:text-white"
+              size={"sm"}
               onClick={() => router.push(link.link)}
             >
               {link.name}
             </Button>
           ))}
           <Button
-            className="text-xl text-black dark:text-white"
+            className="text-base text-black dark:text-white"
             onClick={() => router.push("/#pricing")}
+            variant={"shine"}
+            size={"sm"}
           >
             ORDER NOW
           </Button>
+          <DarkModeSwitch />
         </div>
         <Drawer>
           <DrawerTrigger asChild>
@@ -74,8 +79,8 @@ const NavBar = () => {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="bg-white dark:bg-gray-800">
-            <div className="mx-auto w-full max-w-sm">
+          <DrawerContent className="mb-4 bg-white dark:bg-gray-800">
+            <div className="mx-auto flex w-full max-w-sm flex-col items-center">
               <div className="flex flex-col items-center space-y-4 py-6">
                 {links.map((link, index) => (
                   <Button
@@ -91,13 +96,7 @@ const NavBar = () => {
                   ORDER NOW
                 </Button>
               </div>
-              <DrawerFooter>
-                <DrawerClose asChild>
-                  <Button variant="outline" className="w-full">
-                    Close
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
+              <DarkModeSwitch />
             </div>
           </DrawerContent>
         </Drawer>

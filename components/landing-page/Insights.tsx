@@ -8,10 +8,12 @@ import {
 } from "../ui/card";
 import HyperText from "../magicui/hyper-text";
 import NumberTicker from "../magicui/number-ticker";
+import { BorderBeam } from "../magicui/border-beam";
 
 const Insights = () => {
   return (
-    <Card className="w-full">
+    <Card className="relative w-full">
+      <BorderBeam size={250} duration={12} delay={9} />
       <CardHeader className="flex flex-col items-center">
         <CardTitle className="text-3xl">Analytics</CardTitle>
         <CardDescription>

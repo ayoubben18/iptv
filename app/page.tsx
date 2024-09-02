@@ -6,6 +6,7 @@ import { MoviesSlider } from "@/components/landing-page/MoviesSlider";
 import Pricing from "@/components/landing-page/Pricing";
 import PageWrapper from "@/components/PageWrapper";
 import { Metadata } from "next";
+import Meteors from "@/components/magicui/meteors";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <PageWrapper className="gap-10 pt-20 sm:gap-20">
+    <PageWrapper className="relative gap-10 pt-5 md:pt-10 2xl:gap-16 2xl:pt-20">
+      <Meteors number={20} />
       <Hero />
       <Insights />
       <div className="flex w-full flex-col items-center justify-center">

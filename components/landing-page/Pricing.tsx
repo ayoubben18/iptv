@@ -122,7 +122,7 @@ const PricingCard = ({
       </CardContent>
       <CardFooter className="mt-auto flex flex-col items-center">
         <h1 className="mb-4 text-4xl font-black">$ {price}</h1>
-        <Button className="w-full" onClick={handleClick}>
+        <Button className="w-full" onClick={handleClick} variant={"ringHover"}>
           Order
         </Button>
       </CardFooter>
