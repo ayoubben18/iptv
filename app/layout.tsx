@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import WhatsappFloat from "@/components/shared/WhatsappFloat";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -70,6 +71,7 @@ export default function RootLayout({
             <Toaster richColors position="top-center" theme="dark" />
             <NavBar />
             {children}
+            <WhatsappFloat />
             <Footer />
             <SpeedInsights />
             <Analytics />
