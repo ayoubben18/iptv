@@ -13,7 +13,6 @@ import { BorderBeam } from "../magicui/border-beam";
 const Insights = () => {
   return (
     <Card className="relative w-full">
-      <BorderBeam size={250} duration={12} delay={9} />
       <CardHeader className="flex flex-col items-center">
         <CardTitle className="text-3xl">Analytics</CardTitle>
         <CardDescription>
@@ -62,6 +61,7 @@ const Insights = () => {
           </div>
         </div>
       </CardContent>
+      <BorderBeam size={250} duration={12} delay={9} />
     </Card>
   );
 };

@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <PageWrapper className="relative gap-10 pt-5 md:pt-10 2xl:gap-16 2xl:pt-20">
-      <Meteors number={20} />
+    <PageWrapper className="gap-10 pt-5 md:pt-10 2xl:gap-16 2xl:pt-20">
       <Hero />
       <Insights />
       <div className="flex w-full flex-col items-center justify-center">
