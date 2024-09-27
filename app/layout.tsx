@@ -60,6 +60,19 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "nutyq2izp3");
           `}
           </Script>
+          <Script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=AW-11019862715"
+          >{`
+             window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+ gtag('set', 'linker', {
+   'domains': ['ronotv.com', 'patterncrafteronline.com']
+   });
+  gtag('config', 'AW-11019862715');
+
+          `}</Script>
         </head>
         <body
           className={cn(
