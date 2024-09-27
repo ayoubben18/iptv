@@ -61,18 +61,20 @@ export default function RootLayout({
           `}
           </Script>
           <Script
-            async
             src="https://www.googletagmanager.com/gtag/js?id=AW-11019862715"
-          >{`
-             window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
- gtag('set', 'linker', {
-   'domains': ['ronotv.com', 'patterncrafteronline.com']
-   });
-  gtag('config', 'AW-11019862715');
-
-          `}</Script>
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('set', 'linker', {
+                'domains': ['ronotv.com', 'patterncrafteronline.com']
+              });
+              gtag('config', 'AW-11019862715');
+            `}
+          </Script>
         </head>
         <body
           className={cn(
