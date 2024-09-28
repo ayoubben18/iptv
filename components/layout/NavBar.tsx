@@ -12,31 +12,32 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import DarkModeSwitch from "../shared/DarkModeSwitch";
-
-const links = [
-  {
-    name: "Pricing",
-    link: "/#pricing",
-  },
-  {
-    name: "Free Trial",
-    link: "/free-trial",
-  },
-  {
-    name: "Setup Guide",
-    link: "/blogs",
-  },
-  {
-    name: "Channels List",
-    link: "/channels",
-  },
-  {
-    name: "Support",
-    link: "/support",
-  },
-];
+import { useI18n } from "@/locales/client";
 
 const NavBar = () => {
+  const t = useI18n();
+  const links = [
+    {
+      name: t("navbar.pricing"),
+      link: "/#pricing",
+    },
+    {
+      name: t("navbar.freeTrial"),
+      link: "/free-trial",
+    },
+    {
+      name: t("navbar.setupGuide"),
+      link: "/blogs",
+    },
+    {
+      name: t("navbar.channelsList"),
+      link: "/channels",
+    },
+    {
+      name: t("navbar.support"),
+      link: "/support",
+    },
+  ];
   const router = useRouter();
   return (
     <div className="container mx-auto px-4">
@@ -68,7 +69,7 @@ const NavBar = () => {
             variant={"shine"}
             size={"sm"}
           >
-            ORDER NOW
+            {t("navbar.orderNow")}
           </Button>
           <DarkModeSwitch />
         </div>

@@ -92,4 +92,45 @@ export default {
   whatAreWeStoringText:
     "В нашем случае мы используем новейшие фреймворки и технологии для обеспечения наилучшего пользовательского опыта. Поэтому мы ничего не храним.",
   chatWithUs: "С нами пообщайтесь",
-} as const;
+  helloIWantToGetInTouchWithRONOTV: "Привет! Я хотел бы связаться с RONOTV.",
+
+  // NavBar translations
+  navbar: {
+    pricing: "Цены",
+    freeTrial: "Бесплатная пробная версия",
+    setupGuide: "Руководство по настройке",
+    channelsList: "Список каналов",
+    support: "Поддержка",
+    orderNow: "ЗАКАЗАТЬ СЕЙЧАС",
+  },
+
+  contactUs: {
+    title: "Свяжитесь с нами",
+    description: "Свяжитесь с нами через WhatsApp",
+    availability: "Мы доступны с понедельника по пятницу, с 9:00 до 17:00.",
+    contactViaWhatsApp: "Связаться через WhatsApp",
+  },
+
+  blogs: {
+    minRead: "мин чтения",
+  },
+  available: "Доступно",
+
+  // EmailForm translations
+  "Enter Your Good Name Here:": "Введите ваше имя здесь:",
+  "Enter Your Email Address:": "Введите ваш адрес электронной почты:",
+  "Enter Your Message Here:": "Введите ваше сообщение здесь:",
+  "John Doe": "Иван Иванов",
+  "john@example.com": "ivan@primer.ru",
+  "My question is what the dog doing?": "Мой вопрос: что делает собака?",
+  Send: "Отправить",
+  "Please Enter Your Name": "Пожалуйста, введите ваше имя",
+  "Please Enter a Valid Email Address":
+    "Пожалуйста, введите действительный адрес электронной почты",
+  "Please make sure your message is at least 10 characters long.":
+    "Пожалуйста, убедитесь, что ваше сообщение содержит не менее 10 символов.",
+  "Sending Email...": "Отправка электронного письма...",
+  "Email Sent Successfully!": "Электронное письмо успешно отправлено!",
+  "Failed to send email. Please try again later.":
+    "Не удалось отправить электронное письмо. Пожалуйста, попробуйте позже.",
+};

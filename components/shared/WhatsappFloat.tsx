@@ -2,10 +2,10 @@ import Link from "next/link";
 import WhatsappIcon from "./whatsapp-svgrepo-com.svg";
 import { getI18n } from "@/locales/server";
 const phoneNumber = "+212777737974"; // Replace with your actual WhatsApp number
-const message = "Hello! I'd like to get in touch with RONOTV."; // Pre-filled message
 
 export default async function WhatsappFloat() {
   const t = await getI18n();
+  const message = `${t("helloIWantToGetInTouchWithRONOTV")}.`; // Pre-filled message
   // Replace this with your actual WhatsApp number or group invite link
   const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   return (

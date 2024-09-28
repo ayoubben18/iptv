@@ -90,5 +90,44 @@ export default {
   whatAreWeStoringText:
     "In our case we are using the latest frameworks and technologies to ensure the best user experience. so we are not storing any.",
 
-  chatWithUs: "",
-} as const;
+  chatWithUs: "Chat with us",
+  helloIWantToGetInTouchWithRONOTV:
+    "Hello! I'd like to get in touch with RONOTV.",
+
+  navbar: {
+    pricing: "Pricing",
+    freeTrial: "Free Trial",
+    setupGuide: "Setup Guide",
+    channelsList: "Channels List",
+    support: "Support",
+    orderNow: "ORDER NOW",
+  },
+
+  contactUs: {
+    title: "Contact Us",
+    description: "Get in touch with us via WhatsApp",
+    availability: "We're available Monday to Friday, 9am to 5pm.",
+    contactViaWhatsApp: "Contact via WhatsApp",
+  },
+
+  blogs: {
+    minRead: "min read",
+  },
+  available: "Available",
+
+  "Enter Your Good Name Here:": "Enter Your Good Name Here:",
+  "Enter Your Email Address:": "Enter Your Email Address:",
+  "Enter Your Message Here:": "Enter Your Message Here:",
+  "John Doe": "John Doe",
+  "john@example.com": "john@example.com",
+  "My question is what the dog doing?": "My question is what the dog doing?",
+  Send: "Send",
+  "Please Enter Your Name": "Please Enter Your Name",
+  "Please Enter a Valid Email Address": "Please Enter a Valid Email Address",
+  "Please make sure your message is at least 10 characters long.":
+    "Please make sure your message is at least 10 characters long.",
+  "Sending Email...": "Sending Email...",
+  "Email Sent Successfully!": "Email Sent Successfully!",
+  "Failed to send email. Please try again later.":
+    "Failed to send email. Please try again later.",
+};

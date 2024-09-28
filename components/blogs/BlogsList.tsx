@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/card";
 import { getBlogs } from "@/db/data/blogs-data";
 import { getBlogCreationTime } from "@/lib/parsers";
+import { getI18n } from "@/locales/server";
 import { CalendarIcon, ClockIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { notFound } from "next/navigation";
 const BlogsList = async () => {
   const blogs = await getBlogs();
   if (!blogs) return notFound();
+  const t = await getI18n();
 
   return (
     <div className="grid aspect-video w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -59,7 +61,9 @@ const BlogsList = async () => {
               </div>
               <div className="flex items-center">
                 <ClockIcon className="mr-1 h-4 w-4" />
-                <span>{"5"} min read</span>
+                <span>
+                  {"5"} {t("blogs.minRead")}
+                </span>
               </div>
             </CardFooter>
           </Card>

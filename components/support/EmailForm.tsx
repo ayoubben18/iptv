@@ -15,6 +15,8 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useMutation } from "@tanstack/react-query";
 import { sendSupportEmail } from "@/lib/send-email";
+import { useI18n } from "@/locales/client";
+
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Please Enter Your Name" }),
   email: z.string().email({ message: "Please Enter a Valid Email Address" }),
@@ -23,6 +25,7 @@ const contactFormSchema = z.object({
   }),
 });
 export default function EmailForm() {
+  const t = useI18n();
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ["sendEmail"],
     mutationFn: sendSupportEmail,
@@ -61,6 +64,7 @@ export default function EmailForm() {
       error: "Failed to send email. Please try again later.",
     });
   };
+
   return (
     <Form {...form}>
       <form
@@ -68,33 +72,33 @@ export default function EmailForm() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="col-span-3 flex flex-col gap-4 lg:col-span-3 lg:gap-6">
-          <h2 className="lg:text-xl">Enter Your Good Name Here:</h2>
+          <h2 className="lg:text-xl">{t("Enter Your Good Name Here:")}</h2>
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input placeholder={t("John Doe")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <h2 className="lg:text-xl">Enter Your Email Address:</h2>
+          <h2 className="lg:text-xl">{t("Enter Your Email Address:")}</h2>
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="john@example.com" {...field} />
+                  <Input placeholder={t("john@example.com")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <h2 className="lg:text-xl">Enter Your Message Here:</h2>
+          <h2 className="lg:text-xl">{t("Enter Your Message Here:")}</h2>
           <FormField
             control={form.control}
             name="message"
@@ -103,14 +107,14 @@ export default function EmailForm() {
                 <FormControl>
                   <Textarea
                     {...field}
-                    placeholder="My question is what the dog doing?"
+                    placeholder={t("My question is what the dog doing?")}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={isPending}>Send</Button>
+          <Button disabled={isPending}>{t("Send")}</Button>
         </div>
       </form>
     </Form>

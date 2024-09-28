@@ -1,13 +1,13 @@
 "use client";
-import { SearchResult, SearchType } from "@/types/search.types";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { useState } from "react";
-import { useQueryState } from "nuqs";
-import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "../ui/skeleton";
 import { getChannelsData } from "@/external-server-calls/channels-data";
+import { SearchResult, SearchType } from "@/types/search.types";
+import { useQuery } from "@tanstack/react-query";
+import { useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { Badge } from "../ui/badge";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
+import { useI18n } from "@/locales/client";
 
 function ChannelsList() {
   const [search] = useQueryState("search", {
@@ -27,6 +27,7 @@ function ChannelsList() {
         typeSearch,
       ),
   });
+  const t = useI18n();
 
   return (
     <div className="w-full">
@@ -49,7 +50,9 @@ function ChannelsList() {
       ) : (
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data &&
-            data.map((card, index) => <CardItem key={index} {...card} />)}
+            data.map((card, index) => (
+              <CardItem key={index} {...card} locale={t("available")} />
+            ))}
         </div>
       )}
     </div>
@@ -58,9 +61,11 @@ function ChannelsList() {
 
 export default ChannelsList;
 
-const CardItem = ({ title, group }: SearchResult) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+const CardItem = ({
+  title,
+  group,
+  locale,
+}: SearchResult & { locale: string }) => {
   return (
     <Card className="flex flex-col justify-between transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
       <CardContent className="p-4">
@@ -73,7 +78,7 @@ const CardItem = ({ title, group }: SearchResult) => {
             className="h-2 w-2 rounded-full bg-green-500"
             aria-hidden="true"
           ></span>
-          <span>Available</span>
+          <span>{locale}</span>
         </Badge>
       </CardFooter>
     </Card>

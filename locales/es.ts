@@ -93,4 +93,45 @@ export default {
   whatAreWeStoringText:
     "En nuestro caso, estamos utilizando los últimos frameworks y tecnologías para garantizar la mejor experiencia de usuario. Por lo tanto, no estamos almacenando nada.",
   chatWithUs: "Chatea con nosotros",
-} as const;
+  helloIWantToGetInTouchWithRONOTV: "Hola! Me gustaría contactar con RONOTV.",
+
+  // NavBar translations
+  navbar: {
+    pricing: "Precios",
+    freeTrial: "Prueba gratuita",
+    setupGuide: "Guía de configuración",
+    channelsList: "Lista de canales",
+    support: "Soporte",
+    orderNow: "ORDENAR AHORA",
+  },
+
+  contactUs: {
+    title: "Contáctenos",
+    description: "Póngase en contacto con nosotros a través de WhatsApp",
+    availability: "Estamos disponibles de lunes a viernes, de 9am a 5pm.",
+    contactViaWhatsApp: "Contactar vía WhatsApp",
+  },
+  blogs: {
+    minRead: "min de lectura",
+  },
+  available: "Disponible",
+
+  // EmailForm translations
+  "Enter Your Good Name Here:": "Ingrese su nombre aquí:",
+  "Enter Your Email Address:": "Ingrese su dirección de correo electrónico:",
+  "Enter Your Message Here:": "Ingrese su mensaje aquí:",
+  "John Doe": "Juan Pérez",
+  "john@example.com": "juan@ejemplo.com",
+  "My question is what the dog doing?":
+    "Mi pregunta es ¿qué está haciendo el perro?",
+  Send: "Enviar",
+  "Please Enter Your Name": "Por favor, ingrese su nombre",
+  "Please Enter a Valid Email Address":
+    "Por favor, ingrese una dirección de correo electrónico válida",
+  "Please make sure your message is at least 10 characters long.":
+    "Por favor, asegúrese de que su mensaje tenga al menos 10 caracteres.",
+  "Sending Email...": "Enviando correo electrónico...",
+  "Email Sent Successfully!": "¡Correo electrónico enviado con éxito!",
+  "Failed to send email. Please try again later.":
+    "No se pudo enviar el correo electrónico. Por favor, inténtelo de nuevo más tarde.",
+};

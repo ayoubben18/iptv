@@ -8,21 +8,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useI18n } from "@/locales/client";
 import { MessageCircle, Phone } from "lucide-react";
 
 const ContactComp = () => {
   const phoneNumber = "+212777737974"; // Replace with your actual WhatsApp number
-  const message = "Hello! I'd like to get in touch with RONOTV."; // Pre-filled message
 
+  const t = useI18n();
   const handleWhatsAppClick = () => {
+    const message = `${t("helloIWantToGetInTouchWithRONOTV")}.`; // Pre-filled message
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
+
   return (
     <Card className="mx-auto w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Contact Us</CardTitle>
-        <CardDescription>Get in touch with us via WhatsApp</CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          {t("contactUs.title")}
+        </CardTitle>
+        <CardDescription>{t("contactUs.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center space-x-2">
@@ -30,7 +35,7 @@ const ContactComp = () => {
           <span>{phoneNumber}</span>
         </div>
         <p className="mb-4 text-sm text-gray-500">
-          We're available Monday to Friday, 9am to 5pm.
+          {t("contactUs.availability")}
         </p>
       </CardContent>
       <CardFooter>
@@ -38,7 +43,8 @@ const ContactComp = () => {
           onClick={handleWhatsAppClick}
           className="w-full bg-green-500 hover:bg-green-600"
         >
-          <MessageCircle className="mr-2 h-4 w-4" /> Contact via WhatsApp
+          <MessageCircle className="mr-2 h-4 w-4" />{" "}
+          {t("contactUs.contactViaWhatsApp")}
         </Button>
       </CardFooter>
     </Card>
