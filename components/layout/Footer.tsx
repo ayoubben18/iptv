@@ -14,76 +14,79 @@ import {
   Drawer,
 } from "../ui/drawer";
 import { Button } from "../ui/button";
-
-const footerMenuItems = [
-  {
-    title: "Company",
-    items: [
-      { name: "About Us", link: "#about" },
-      { name: "Library", link: "/channels" },
-      { name: "Pricing", link: "#pricing" },
-    ],
-  },
-  {
-    title: "Legal",
-    items: [
-      {
-        name: "Privacy Policy",
-        content: {
-          title: "Privacy Policy",
-          description: [
-            {
-              title: "Property Claim",
-              text: "The trademarks and logos of all the merchants displayed on the website are the property of their respective owners. RONOTV is not affiliated or associated with any of them.",
-            },
-            {
-              title: "Safety Concern",
-              text: "Please be assured that RONOTV only provides original apps and apk files without any cheat, modifications or virus. Your personal information will NOT be shared with any other third party without your explicit permission.",
-            },
-            {
-              title: "Policy Change",
-              text: "We may amend this Privacy Policy from time to time. Use of information we collect now is subject to the Privacy Policy in effect at the time such information is used. A user is bound by any changes to the Privacy Policy when he or she uses the Services after such changes have been first posted.",
-            },
-          ],
-        },
-      },
-      {
-        name: "Terms of Service",
-        content: {
-          title: "Terms of Service",
-          description: [
-            {
-              title: "The Information We Collect",
-              text: "We collect only information that is necessary to provide our services. And we do not collect any personal information.",
-            },
-            {
-              title: "How We Use the Information",
-              text: "We store the information to ensure the best user experience. And we do not use the information for any other purpose.",
-            },
-          ],
-        },
-      },
-      {
-        name: "Cookies Policy",
-        content: {
-          title: "Cookies Policy",
-          description: [
-            {
-              title: "What are Cookies?",
-              text: "Cookies are small text files stored on your device.",
-            },
-            {
-              title: "What are we storing?",
-              text: "In our case we are using the latest frameworks and technologies to ensure the best user experience. so we are not storing any.",
-            },
-          ],
-        },
-      },
-    ],
-  },
-];
+import { useI18n } from "@/locales/client";
 
 const Footer = () => {
+  const t = useI18n();
+
+  const footerMenuItems = [
+    {
+      title: t("company"),
+      items: [
+        { name: t("aboutUs"), link: "#about" },
+        { name: t("library"), link: "/channels" },
+        { name: t("pricing"), link: "#pricing" },
+      ],
+    },
+    {
+      title: t("legal"),
+      items: [
+        {
+          name: t("privacyPolicy"),
+          content: {
+            title: t("privacyPolicy"),
+            description: [
+              {
+                title: t("propertyClaim"),
+                text: t("propertyClaimText"),
+              },
+              {
+                title: t("safetyConcern"),
+                text: t("safetyConcernText"),
+              },
+              {
+                title: t("policyChange"),
+                text: t("policyChangeText"),
+              },
+            ],
+          },
+        },
+        {
+          name: t("termsOfService"),
+          content: {
+            title: t("termsOfService"),
+            description: [
+              {
+                title: t("informationWeCollect"),
+                text: t("informationWeCollectText"),
+              },
+              {
+                title: t("howWeUseInformation"),
+                text: t("howWeUseInformationText"),
+              },
+            ],
+          },
+        },
+        {
+          name: t("cookiesPolicy"),
+          content: {
+            title: t("cookiesPolicy"),
+            description: [
+              {
+                title: t("whatAreCookies"),
+                text: t("whatAreCookiesText"),
+              },
+              {
+                title: t("whatAreWeStoring"),
+                text: t("whatAreWeStoringText"),
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+
   return (
     <div className="flex w-full flex-col gap-8 py-10">
       <Separator />
@@ -91,21 +94,40 @@ const Footer = () => {
         <div className="mt-7 flex items-center justify-between">
           <h1 className="text-2xl font-black">RONOTV</h1>
           <div className="flex gap-6">
-            <Link href="tel:+212777737974" aria-label="Call us">
+            <Link href="tel:+212777737974" aria-label={t("callUs")}>
               <Phone className="h-6 w-6" />
             </Link>
-            <Link href="mailto:order@ronotv.com" aria-label="Email us">
+            <Link href="mailto:order@ronotv.com" aria-label={t("emailUs")}>
               <Mail className="h-6 w-6" />
             </Link>
           </div>
         </div>
-        <Menu />
+        <Menu footerMenuItems={footerMenuItems} />
       </div>
     </div>
   );
 };
 
-const Menu = () => {
+const Menu = ({
+  footerMenuItems,
+}: {
+  footerMenuItems: Array<{
+    title: string;
+    items: Array<{
+      name: string;
+      link?: string;
+      content?: {
+        title: string;
+        description: Array<{
+          title: string;
+          text: string;
+        }>;
+      };
+    }>;
+  }>;
+}) => {
+  const t = useI18n();
+
   return (
     <div className="mt-4 grid grid-cols-2">
       {footerMenuItems.map((menu, index) => (
@@ -114,7 +136,7 @@ const Menu = () => {
           <ul className="flex flex-col gap-2">
             {menu.items.map((item, itemIndex) => (
               <li key={itemIndex} className="text-sm font-light">
-                {menu.title === "Company" ? (
+                {menu.title === t("company") ? (
                   <Link href={(item as { link: string }).link}>
                     {item.name}
                   </Link>
@@ -158,7 +180,7 @@ const Menu = () => {
                       </DrawerDescription>
                       <DrawerFooter>
                         <DrawerClose asChild>
-                          <Button variant="outline">Close</Button>
+                          <Button variant="outline">{t("close")}</Button>
                         </DrawerClose>
                       </DrawerFooter>
                     </DrawerContent>

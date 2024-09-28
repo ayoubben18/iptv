@@ -16,8 +16,10 @@ import {
 } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 import { basicFeatures } from "@/lib/constants";
+import { useI18n } from "@/locales/client";
 
 const Pricing = () => {
+  const t = useI18n();
   const { data, isLoading } = useQuery({
     queryKey: ["offers"],
     queryFn: () => getOffers(),
@@ -25,14 +27,9 @@ const Pricing = () => {
   return (
     <SectionWrapper className="items-start gap-8">
       <h1 className="text-start text-4xl font-black" id="pricing">
-        Our Pricing Plans
+        {t("pricingTitle")}
       </h1>
-      <p className="max-w-4xl">
-        Select the perfect plan for your needs and enjoy top-quality IPTV
-        service at great value. From flexible monthly options to cost-saving
-        annual plans, we have something for everyone. Start streaming your
-        favorite content today!
-      </p>
+      <p className="max-w-4xl">{t("pricingDescription")}</p>
 
       {isLoading ? (
         <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -99,6 +96,7 @@ const PricingCard = ({
   const handleClick = () => {
     router.push(`/checkout?plan=${name}&connections=${connection}`);
   };
+  const t = useI18n();
   return (
     <Card className="flex h-full flex-col">
       <CardHeader>
@@ -123,7 +121,7 @@ const PricingCard = ({
       <CardFooter className="mt-auto flex flex-col items-center">
         <h1 className="mb-4 text-4xl font-black">$ {price}</h1>
         <Button className="w-full" onClick={handleClick} variant={"ringHover"}>
-          Order
+          {t("order")}
         </Button>
       </CardFooter>
     </Card>

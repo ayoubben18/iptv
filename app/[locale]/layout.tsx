@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import "./globals.css";
+import "../[locale]/globals.css";
 import QueryProvider from "@/providers/QuerProvider";
 import { Toaster } from "sonner";
 
@@ -12,6 +12,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import WhatsappFloat from "@/components/shared/WhatsappFloat";
+import { I18nProvider } from "@/providers/I18Provider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -44,12 +45,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
     <QueryProvider>
-      <html lang="en">
+      <html lang={params.locale}>
         <head>
           <Script id="microsoft-clarity" strategy="beforeInteractive">
             {`
@@ -82,15 +85,17 @@ export default function RootLayout({
             fontSans.variable,
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="dark">
-            <Toaster richColors position="top-center" theme="dark" />
-            <NavBar />
-            {children}
-            <WhatsappFloat />
-            <Footer />
-            <SpeedInsights />
-            <Analytics />
-          </ThemeProvider>
+          <I18nProvider params={{ locale: params.locale }}>
+            <ThemeProvider attribute="class" defaultTheme="dark">
+              <Toaster richColors position="top-center" theme="dark" />
+              <NavBar />
+              {children}
+              <WhatsappFloat />
+              <Footer />
+              <SpeedInsights />
+              <Analytics />
+            </ThemeProvider>
+          </I18nProvider>
         </body>
       </html>
     </QueryProvider>
