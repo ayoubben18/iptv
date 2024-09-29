@@ -3,11 +3,12 @@ import PageWrapper from "@/components/PageWrapper";
 import { getBlog, getBlogs } from "@/db/data/blogs-data";
 import { getBlogCreationTime } from "@/lib/parsers";
 import { notFound } from "next/navigation";
+import { setStaticParamsLocale } from "next-international/server";
 
 export const generateMetadata = async ({
   params,
 }: {
-  params: { title: string };
+  params: { title: string; locale: string };
 }) => {
   try {
     const blog = await getBlog(params.title);
@@ -37,7 +38,12 @@ export const generateStaticParams = async () => {
   }
 };
 
-const page = async ({ params }: { params: { title: string } }) => {
+const page = async ({
+  params,
+}: {
+  params: { title: string; locale: string };
+}) => {
+  setStaticParamsLocale(params.locale);
   const blog = await getBlog(params.title);
 
   if (!blog) return notFound();
