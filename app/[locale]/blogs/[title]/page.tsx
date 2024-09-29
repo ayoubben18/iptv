@@ -4,6 +4,7 @@ import { getBlog, getBlogs } from "@/db/data/blogs-data";
 import { getBlogCreationTime } from "@/lib/parsers";
 import { notFound } from "next/navigation";
 import { setStaticParamsLocale } from "next-international/server";
+import { getStaticParams } from "@/locales/server";
 
 export const generateMetadata = async ({
   params,
