@@ -12,7 +12,7 @@ import { useI18n } from "@/locales/client";
 import { MessageCircle, Phone } from "lucide-react";
 
 const ContactComp = () => {
-  const phoneNumber = "+212777737974"; // Replace with your actual WhatsApp number
+  const phoneNumber = "+12342797292"; // Replace with your actual WhatsApp number
 
   const t = useI18n();
   const handleWhatsAppClick = () => {
