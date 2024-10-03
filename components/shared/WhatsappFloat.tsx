@@ -1,7 +1,7 @@
 import Link from "next/link";
 import WhatsappIcon from "./whatsapp-svgrepo-com.svg";
 import { getI18n } from "@/locales/server";
-const phoneNumber = "+212777737974"; // Replace with your actual WhatsApp number
+const phoneNumber = "+12342797292"; // Replace with your actual WhatsApp number
 
 export default async function WhatsappFloat() {
   const t = await getI18n();
