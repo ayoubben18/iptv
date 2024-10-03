@@ -12,19 +12,6 @@ interface BlogContent {
   title: string;
 }
 
-const insertBlog = async (content: string) => {
-  const { data, error, status } = await supabase
-    .from("blogs")
-    .insert([
-      {
-        content: JSON.parse(content),
-      },
-    ])
-    .select("*");
-  revalidatePath("/products/content-management");
-  return handleStatus(status, data, error) as Blogs;
-};
-
 const getBlogs = async () => {
   let query = supabase.from("blogs").select("*").order("created_at", {
     ascending: true,
@@ -64,4 +51,4 @@ const getBlog = async (title: string) => {
   return handleStatus(status, data, error) as unknown as BlogContent;
 };
 
-export { insertBlog, getBlogs, deleteBlog, updateBlog, getBlog };
+export { getBlogs, deleteBlog, updateBlog, getBlog };
