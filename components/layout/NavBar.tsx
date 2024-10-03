@@ -37,6 +37,10 @@ const NavBar = () => {
       name: t("navbar.support"),
       link: "/support",
     },
+    {
+      name: t("navbar.blogs"),
+      link: "/articles",
+    },
   ];
   const router = useRouter();
   return (

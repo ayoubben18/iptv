@@ -8,9 +8,10 @@ import { defaultExtensions } from "./extensions";
 
 interface BlogWrapperProps {
   content: JSONContent;
+  type?: "blogs" | "articles";
 }
 
-const BlogWrapper = ({ content }: BlogWrapperProps) => {
+const BlogWrapper = ({ content, type }: BlogWrapperProps) => {
   const extensions = [...defaultExtensions];
   const { push } = useRouter();
 
@@ -36,7 +37,7 @@ const BlogWrapper = ({ content }: BlogWrapperProps) => {
         variant="outline"
         className="mt-4"
         onClick={() => {
-          push("/blogs");
+          push(`/${type}`);
         }}
       >
         <HomeIcon className="mr-2 h-4 w-4" />

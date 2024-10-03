@@ -4,6 +4,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { getArticles } from "@/db/data/articles-data";
 import { getBlogs } from "@/db/data/blogs-data";
 import { getBlogCreationTime } from "@/lib/parsers";
 import { getI18n } from "@/locales/server";
@@ -11,24 +12,29 @@ import { CalendarIcon, ClockIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { JSONContent } from "novel";
 
-const BlogsList = async () => {
-  const blogs = await getBlogs();
+type Props = {
+  type: "blogs" | "articles";
+};
+
+const BlogsList = async ({ type }: Props) => {
+  const blogs = type === "blogs" ? await getBlogs() : await getArticles();
   if (!blogs) return notFound();
   const t = await getI18n();
 
   return (
-    <div className="grid aspect-video w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {blogs.map(({ id, created_at, content, title }, index) => {
         const {
           title: BlogTitle,
           description,
           image,
-        } = getBlogCreationTime(content);
+        } = getBlogCreationTime(content as JSONContent);
         return (
           <Card className="max-w-sm overflow-hidden" key={id}>
             <div className="relative aspect-video">
-              <Link href={`/blogs/${title}`}>
+              <Link href={`/${type}/${title}`}>
                 <Image
                   src={image}
                   alt="The blog image"

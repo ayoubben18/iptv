@@ -5,6 +5,8 @@ import { getBlogCreationTime } from "@/lib/parsers";
 import { notFound } from "next/navigation";
 import { setStaticParamsLocale } from "next-international/server";
 import { getStaticParams } from "@/locales/server";
+import { getArticle, getArticles } from "@/db/data/articles-data";
+import { JSONContent } from "novel";
 
 export const generateMetadata = async ({
   params,
@@ -12,15 +14,18 @@ export const generateMetadata = async ({
   params: { title: string; locale: string };
 }) => {
   try {
-    const blog = await getBlog(params.title);
-    if (!blog) throw new Error("No blog found");
-    const { title, description, image } = getBlogCreationTime(blog.content);
+    const article = await getArticle(params.title);
+    if (!article) throw new Error("No article found");
+    const { title, description, image } = getBlogCreationTime(
+      article.content as JSONContent,
+    );
     return {
-      title,
-      description,
+      title: article.seo_title,
+      description: article.seo_description,
       openGraph: {
         images: [image],
       },
+      keywords: article.seo_keywords,
     };
   } catch (error) {
     return notFound();
@@ -29,10 +34,10 @@ export const generateMetadata = async ({
 
 export const generateStaticParams = async () => {
   try {
-    const blogs = await getBlogs();
-    if (!blogs) throw new Error("No blogs found");
-    return blogs.map((blog) => ({
-      title: blog.title,
+    const articles = await getArticles();
+    if (!articles) throw new Error("No articles found");
+    return articles.map((article) => ({
+      title: article.title,
     }));
   } catch (error) {
     return notFound();
@@ -45,12 +50,11 @@ const page = async ({
   params: { title: string; locale: string };
 }) => {
   setStaticParamsLocale(params.locale);
-  const blog = await getBlog(params.title);
-
-  if (!blog) return notFound();
+  const article = await getArticle(params.title);
+  if (!article) return notFound();
   return (
     <PageWrapper className="my-0 sm:my-20">
-      <BlogWrapper content={blog.content} type="blogs" />
+      <BlogWrapper content={article.content as JSONContent} type="articles" />
     </PageWrapper>
   );
 };

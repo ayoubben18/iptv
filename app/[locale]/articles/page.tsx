@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Blogs",
-  description: "Blogs page and setup guide",
+  title: "Articles",
+  description: "Articles page and Insights",
 };
 
 const page = () => {
@@ -24,7 +24,7 @@ const page = () => {
           </div>
         }
       >
-        <BlogsList type="blogs" />
+        <BlogsList type="articles" />
       </Suspense>
     </PageWrapper>
   );

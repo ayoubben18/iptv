@@ -9,24 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      blogs: {
+      articles: {
         Row: {
-          content: Json | null
+          content: Json
           created_at: string
           id: number
-          title: string | null
+          seo_description: string | null
+          seo_keywords: string[] | null
+          seo_title: string | null
+          title: string
         }
         Insert: {
-          content?: Json | null
+          content: Json
           created_at?: string
           id?: number
-          title?: string | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          title: string
         }
         Update: {
-          content?: Json | null
+          content?: Json
           created_at?: string
           id?: number
-          title?: string | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      blogs: {
+        Row: {
+          content: Json
+          created_at: string
+          id: number
+          seo_description: string | null
+          seo_keywords: string[] | null
+          seo_title: string | null
+          title: string
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          id?: number
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          title: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: number
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          title?: string
         }
         Relationships: []
       }
@@ -35,23 +74,23 @@ export type Database = {
           device_type: string
           id: string
           mac_address: string
-          subscription_id: string | null
+          subscription_id: string
         }
         Insert: {
           device_type: string
           id?: string
           mac_address: string
-          subscription_id?: string | null
+          subscription_id: string
         }
         Update: {
           device_type?: string
           id?: string
           mac_address?: string
-          subscription_id?: string | null
+          subscription_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "devices_subscription_id_fkey"
+            foreignKeyName: "devices_subscription_id_subscriptions_id_fk"
             columns: ["subscription_id"]
             isOneToOne: false
             referencedRelation: "subscriptions"
@@ -74,11 +113,11 @@ export type Database = {
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           quick_delivery: boolean | null
-          status: string | null
+          status: Database["public"]["Enums"]["status_enum"]
           subscription_type: string | null
-          user_email: string | null
-          user_name: string | null
-          user_phone: string | null
+          user_email: string
+          user_name: string
+          user_phone: string
           vod: boolean | null
         }
         Insert: {
@@ -88,18 +127,18 @@ export type Database = {
           country_code?: string | null
           created_at?: string | null
           id?: string
-          order_number?: never
+          order_number?: number
           payement_email?: string | null
           payement_full_name?: string | null
           payement_order_id?: string | null
           plan: Database["public"]["Enums"]["subscription_plan"]
           price: number
           quick_delivery?: boolean | null
-          status?: string | null
+          status: Database["public"]["Enums"]["status_enum"]
           subscription_type?: string | null
-          user_email?: string | null
-          user_name?: string | null
-          user_phone?: string | null
+          user_email: string
+          user_name: string
+          user_phone: string
           vod?: boolean | null
         }
         Update: {
@@ -109,40 +148,19 @@ export type Database = {
           country_code?: string | null
           created_at?: string | null
           id?: string
-          order_number?: never
+          order_number?: number
           payement_email?: string | null
           payement_full_name?: string | null
           payement_order_id?: string | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
           price?: number
           quick_delivery?: boolean | null
-          status?: string | null
+          status?: Database["public"]["Enums"]["status_enum"]
           subscription_type?: string | null
-          user_email?: string | null
-          user_name?: string | null
-          user_phone?: string | null
+          user_email?: string
+          user_name?: string
+          user_phone?: string
           vod?: boolean | null
-        }
-        Relationships: []
-      }
-      user_data: {
-        Row: {
-          created_at: string | null
-          email: string
-          id: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          id?: never
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          id?: never
-          user_id?: string
         }
         Relationships: []
       }
@@ -194,6 +212,8 @@ export type Database = {
       }
     }
     Enums: {
+      connections_enum: "1" | "2" | "3"
+      status_enum: "draft" | "paid" | "completed"
       subscription_plan: "monthly" | "quarterly" | "semi-annual" | "annual"
     }
     CompositeTypes: {
