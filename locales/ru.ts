@@ -102,6 +102,7 @@ export default {
     channelsList: "Список каналов",
     support: "Поддержка",
     orderNow: "ЗАКАЗАТЬ СЕЙЧАС",
+    blogs: "Блоги",
   },
 
   contactUs: {

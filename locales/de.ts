@@ -103,6 +103,7 @@ export default {
     channelsList: "Kanalliste",
     support: "Unterstützung",
     orderNow: "JETZT BESTELLEN",
+    blogs: "Blogs",
   },
 
   // Contact Us

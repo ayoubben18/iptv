@@ -102,6 +102,7 @@ export default {
     channelsList: "Liste des chaînes",
     support: "Support",
     orderNow: "COMMANDER MAINTENANT",
+    blogs: "Blogs",
   },
 
   contactUs: {
