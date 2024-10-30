@@ -97,6 +97,7 @@ export default {
 
   // NavBar translations
   // another
+  // another
   navbar: {
     pricing: "Preise",
     freeTrial: "Kostenlose Testversion",
