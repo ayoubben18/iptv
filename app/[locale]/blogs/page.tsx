@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blogs",
   description: "Blogs page and setup guide",
