@@ -96,6 +96,7 @@ export default {
     "Hallo! Ich möchte mich mit RONOTV in Verbindung setzen",
 
   // NavBar translations
+  // another
   navbar: {
     pricing: "Preise",
     freeTrial: "Kostenlose Testversion",
