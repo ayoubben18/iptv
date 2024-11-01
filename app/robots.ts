@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         "/checkout",
         "/free-trial",
         "/channels",
+        "/articles",
       ],
       disallow: [],
     },
